@@ -1,5 +1,5 @@
 MuteMessages <- suppressPackageStartupMessages
-MuteMessages(library(rvest))
+#MuteMessages(library(rvest))
 MuteMessages(library(tidyverse))
 MuteMessages(library(RSelenium))
 MuteMessages(library(XML))
@@ -7,7 +7,7 @@ MuteMessages(library(data.table))
 MuteMessages(library(sendmailR))
 MuteMessages(library(mailR))
 MuteMessages(library(rJava))
-MuteMessages(library(bigstep))
+#MuteMessages(library(bigstep))
 #--------------------------------------
 # Import FOLIOs data
 rawData_2013 <- fread('/Users/c1587s/Dropbox/Webscrape_Puntajes/RawData/Basica2013.csv', header = FALSE, skip=1)
@@ -107,13 +107,13 @@ for (i in seq(1,2, by=1)){
                           as.character(i), "]/a", sep="")
 }
 Mat_third_col_T4[[1]] <- "/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[11]/td[2]/table/tbody/tr[3]/td/a"
+
 # paste all the elements
 Mat_T1 <- c(Mat_first_col_T1)
 Mat_T2 <- c(Mat_first_col_T2, Mat_second_col_T2)
 Mat_T3 <- c(Mat_first_col_T3)
 Mat_T4 <- c(Mat_first_col_T4, Mat_second_col_T4, Mat_third_col_T4)
-preguntas_mat <- c(Mat_T1,Mat_T2,Mat_T3,Mat_T4)
-
+pregs_mat <- c(Mat_T1,Mat_T2,Mat_T3,Mat_T4)
 #--------------------------------------
 # email funcitons
 # Send and e-mail if an error occurs
@@ -147,4 +147,4 @@ send.mail(from = sender,
           send = TRUE)
 }
 
-print("Prelims - Done")
+print("Prelims Step- Done")
