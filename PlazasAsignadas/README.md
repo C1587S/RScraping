@@ -27,8 +27,8 @@ docker run -d -p 4445:4444 selenium/standalone-chrome
 
 > Solucionar incluyendo `Trycatch` para todos los casos.
 
-- Utilizar ajuste similar para cuando no existe información en la tabla del `pop-up`.
-- Ajustar todos los loops anidados.
+- Utilizar ajuste similar para cuando no existe información en la tabla del `pop-up`. (**falta**)
+- Ajustar todos los loops anidados. (**falta**)
 - Terminar de documentar e incluir a Github:
 	- Parte que "scrapea" la tabla pop-up de información. 
 	- parte que incorpora la información en la matriz.
