@@ -4,7 +4,7 @@
 
 
 Anotaciones:
-Antes de ejecutar los programas es encesario instalar docker, y el contenedor de Rselenium:
+Antes de ejecutar los programas es encesario instalar docker, y el contenedor de Rselenium (Para esta aplicación es necesario que sea de chrome, firefox está presentando algunas fallas):
 
 ```Bash
 $ docker pull selenium/standalone-chrome
