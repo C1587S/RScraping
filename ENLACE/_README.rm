@@ -1,0 +1,6 @@
+README file
+- Posibles mejoras al código para mejorar tiempos de ejecuciónel código:
+1- Paralelizar el procreso de scraping, descargando simultáneamente distintas secciones de la lista.
+	ver: Rcrawler (An R package for parallel web crawling and scraping)
+2- Guardar de manera iterativa las filas de los archivos csv. De forma que no se pierdan los datos si el proceso presenta algún error.
+
