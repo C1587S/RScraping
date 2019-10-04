@@ -28,7 +28,11 @@ docker run -d -p 4445:4444 selenium/standalone-chrome
 > Solucionar incluyendo `Trycatch` para todos los casos.
 
 - Utilizar ajuste similar para cuando no existe información en la tabla del `pop-up`. (**falta**)
-- Ajustar todos los loops anidados. (**falta**)
+- Ajustar todos los loops anidados. (Se ajustó con 10 `FOR` anidados, pero es esta la mejor opción?)
 - Terminar de documentar e incluir a Github:
 	- Parte que "scrapea" la tabla pop-up de información. 
 	- parte que incorpora la información en la matriz.
+
+### Anotación importante
+No es necesario entrar en cada una de las posibilidades, sino entrar hasta nivel educativo, donde siempre se activa el botón de consultar. Y a partir de allí darle click y descargar directamente los datos. 
+> ver: `ScrapinR_PlazasAsignadas_Superior_parsimonious`
