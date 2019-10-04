@@ -36,3 +36,19 @@ docker run -d -p 4445:4444 selenium/standalone-chrome
 ### Anotación importante
 No es necesario entrar en cada una de las posibilidades, sino entrar hasta nivel educativo, donde siempre se activa el botón de consultar. Y a partir de allí darle click y descargar directamente los datos. 
 > ver: `ScrapinR_PlazasAsignadas_Superior_parsimonious`
+> Ganancias: con este enfoque son solo un poco más de 192 clicks en los menus de opciones. Antes eran un poco más de 15 millones.
+> 
+- Nuevo algoritmo (hay dos programas, uno para Básica y otro para Superior):
+
+```R
+FOR opciones in ciclo_escolar{
+	FOR opciones in entidad {
+		click on (SUPERIOR o BASICA):
+			FOR elementos in length(table) {
+				click en information
+					Extraer información
+			}
+	volver a cargar la página
+	}
+}
+```
