@@ -41,10 +41,10 @@ No es necesario entrar en cada una de las posibilidades, sino entrar hasta nivel
 - Nuevo algoritmo (hay dos programas, uno para Básica y otro para Superior):
 
 ```R
-FOR opciones in ciclo_escolar{
-	FOR opciones in entidad {
+FOR (opciones in ciclo_escolar){
+	FOR (opciones in entidad) {
 		click on (SUPERIOR o BASICA):
-			FOR elementos in length(table) {
+			FOR (elementos in seq(1,length(table), by=1)) {
 				click en information
 					Extraer información
 			}
