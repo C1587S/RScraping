@@ -99,7 +99,7 @@ for (options in ops_cicloEscolar){
       # fill-in the table
       
       # Filling the information
-      DataFrame$nivelEducativo[element]  <- "EDUCACIÓN SUPERIOR"
+      DataFrame$nivelEducativo[element]  <- "EDUCACIÓN BASICA"
       DataFrame$cicloEscolar[element]    <- cicloEsco_info
       # Row 1
       # concurso
@@ -110,60 +110,56 @@ for (options in ops_cicloEscolar){
       entidad_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[2]/span')
       entidad_info <- entidad_elem$getElementText()    
       DataFrame$entidad[element] <- entidad_info
-      # subsistema
-      subsistema_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[3]/span')
-      subsistema_info <- subsistema_elem$getElementText()
-      DataFrame$subsistema[element] <- subsistema_info
-      # Row 2
       # folio
-      folio_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[4]/span')
+      folio_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[3]/span')
       folio_info <- folio_elem$getElementText()
       DataFrame$folio_info[element] <- folio_info
+      # Row 2
       # prelacion
-      prelacion_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[5]/span')
+      prelacion_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[4]/span')
       prelacion_info <- prelacion_elem$getElementText()
       DataFrame$prelacion_info[element] <- prelacion_info
       # tipoPlaza
-      tipoPlaza_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[6]/span')
+      tipoPlaza_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[5]/span')
       tipoPlaza_info <- tipoPlaza_elem$getElementText()
       DataFrame$tipoPlaza_info[element] <- tipoPlaza_info
-      # Row 3
       # CURP
-      curp_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[7]/span')
+      curp_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[6]/span')
       curp_info <- curp_elem$getElementText()
       DataFrame$curp_info[element] <- curp_info
+      # Row 3
       # tipoEvaluacion
-      tipoEvaluacion_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[8]/span')
+      tipoEvaluacion_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[7]/span')
       tipoEvaluacion_info <- tipoEvaluacion_elem$getElementText()
       DataFrame$tipoEvaluacion_info[element] <- tipoEvaluacion_info
       # tipoVacante
-      tipoVacante_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[9]/span')
+      tipoVacante_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[8]/span')
       tipoVacante_info <- tipoVacante_elem$getElementText()
       DataFrame$tipoVacante_info[element] <- tipoVacante_info
-      # Row 4
       # sostenimiento
-      sostenimiento_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[10]/span')
+      sostenimiento_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[9]/span')
       sostenimiento_info <- sostenimiento_elem$getElementText()
       DataFrame$sostenimiento_info[element] <- sostenimiento_info
+      # Row 4
       # horas
-      horas_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[11]/span')
+      horas_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[10]/span')
       horas_info <- horas_elem$getElementText()  
       DataFrame$numeroroHoras_info[element] <- horas_info
       #  fechaInicio
-      fechaInicio_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[12]/span')
+      fechaInicio_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[11]/span')
       fechaInicio_info <- fechaInicio_elem$getElementText()
-      DataFrame$fechaInicioVacante_info[element] <- fechaInicio_info        
-      # Row 5
+      DataFrame$fechaInicioVacante_info[element] <- fechaInicio_info
       # fechaFin
-      fechaFin_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[13]/span')
+      fechaFin_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[12]/span')
       fechaFin_info <- fechaFin_elem$getElementText()
       DataFrame$fechaFinVacante_info[element] <- fechaFin_info
+      # Row 5
       # CCTlabora
-      CCTlabora_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[14]/span')
+      CCTlabora_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[13]/span')
       CCTlabora_info <- CCTlabora_elem$getElementText()
       DataFrame$CCTlabora_info[element] <- CCTlabora_info
       # clavePlaza
-      clavePlaza_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[15]/span')
+      clavePlaza_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[1]/div/div[14]/span')
       clavePlaza_info <- clavePlaza_elem$getElementText()
       DataFrame$clavePlaza_info[element] <- clavePlaza_info
       
@@ -171,11 +167,11 @@ for (options in ops_cicloEscolar){
       cerrar_boton <- remDr$findElement(value = '/html/body/div[2]/div/div/div[5]/div/div[2]/button')
       cerrar_boton$clickElement()
       remDr$screenshot(display = TRUE)
-
+      
       # Paste the row that we've just created
       DataFrame_CreatedData <- DataFrame_CreatedData %>% bind_rows()
       # Se guarda un excel que adicional la ultima columna (cambiar la ruta)
-      write.csv(DataBase, file="/Users/c1587s/Dropbox/PlazasAsignadas/tablaPlazasAsignadasSuperior.csv", row.names = FALSE, append = TRUE)
+      write.csv(DataBase, file="/Users/c1587s/Dropbox/PlazasAsignadas/tablaPlazasAsignadasBasica.csv", row.names = FALSE, append = TRUE)
       # Aun falta ajsutar que inicie desde donde quedó
       
       # if multiple of 100, click on the next button

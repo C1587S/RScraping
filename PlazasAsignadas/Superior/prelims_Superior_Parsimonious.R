@@ -48,13 +48,15 @@ ops_NivelEduc <- '//*[(@id="react-select-4--option-1")]'
 #--------------------------------------
 # email funcitons
 # Send and e-mail if an error occurs
+# email funcitons
+# Send and e-mail if an error occurs
 send_error_email <- function(){
   sender <- "servidorscrapingr@gmail.com"
-  recipients <- c("Sebastian Cadavid Sanchez <s.cadavid1587@gmail.com>")
+  recipients <- c(" Mauricio Romero Londoño <mauricioromerolondono@gmail.com>", "Sebastian Cadavid Sanchez <s.cadavid1587@gmail.com>") 
   send.mail(from = sender,
             to = recipients,
             subject = "El proceso de scraping ENLACE - 2008 se detuvo.",
-            body = "El proceso se detuvo porque ocurrió un error.",
+            body = "El proceso de scraping Plazas Asignadas se detuvo porque ocurrió un error.",
             smtp = list(host.name = "smtp.gmail.com", port = 465,
                         user.name = "servidorscrapingr@gmail.com",
                         passwd = "ServidorScrape1", ssl = TRUE),
@@ -66,10 +68,10 @@ send_error_email <- function(){
 # Send an e-mail when the process finished without errors
 send_noerror_email <- function(){
   sender <- "servidorscrapingr@gmail.com"
-  recipients <- c("Sebastian Cadavid Sanchez <s.cadavid1587@gmail.com>") #" Mauricio Romero Londoño <mauricioromerolondono@gmail.com>",
+  recipients <- c(" Mauricio Romero Londoño <mauricioromerolondono@gmail.com>", "Sebastian Cadavid Sanchez <s.cadavid1587@gmail.com>") 
   send.mail(from = sender,
             to = recipients,
-            subject = "El proceso de scraping ENLACE - 2008 se detuvo.",
+            subject = "El proceso de scraping Plazas Asignadas se detuvo.",
             body = "El proceso se detuvo porque finalizó sin errores.",
             smtp = list(host.name = "smtp.gmail.com", port = 465,
                         user.name = "servidorscrapingr@gmail.com",
