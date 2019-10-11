@@ -10,7 +10,7 @@ MuteMessages(library(rJava))
 MuteMessages(library(bigstep))
 #--------------------------------------
 # Import FOLIOs data
-rawData_2008 <- fread('/Users/c1587s/Dropbox/Webscrape_Puntajes/RawData/Basica2008.csv', header = FALSE, skip=1)
+rawData_2008 <- fread('RawData/Basica2008.csv', header = FALSE, skip=1)
 columnasN <- nrow(rawData_2008)
 #--------------------------------------
 # Create and empty dataframe
