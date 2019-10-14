@@ -23,11 +23,17 @@ for (i in seq(1, 130, by=1)) {
   Esp_correcta[[i]] <- paste("EspCorrecta", as.character(i), sep="_")
   Esp_marcada[[i]] <- paste("EspMarcada", as.character(i), sep="_")
 }
-dataBase_names <- c(pregs_gral_names, Esp_correcta, Esp_marcada, Mat_correcta, Mat_marcada)
-DataBase = data.frame(matrix(ncol=531,nrow=3))
+#dataBase_names <- c(pregs_gral_names, Esp_correcta, Esp_marcada, Mat_correcta, Mat_marcada)
+dataBase_names <- c(pregs_gral_names, Esp_marcada, Mat_marcada)
+DataBase = data.frame(matrix(ncol=length(Esp_marcada)+length(Mat_marcada)+length(pregs_gral_names),nrow=1))
 colnames(DataBase) <- dataBase_names
 DataBase <- data.frame(lapply(DataBase, as.character), stringsAsFactors=FALSE)
 
+
+dataBase_names <- c(Esp_correcta, Mat_correcta)
+DataBaseCorrecta = data.frame(matrix(ncol=length(Esp_correcta)+length(Mat_correcta),nrow=1))
+colnames(DataBaseCorrecta) <- dataBase_names
+DataBaseCorrecta <- data.frame(lapply(DataBaseCorrecta, as.character), stringsAsFactors=FALSE)
 #--------------------------------------
 # List of Español questions
 ## T1: Lectura
@@ -141,4 +147,7 @@ send.mail(from = sender,
           send = TRUE)
 }
 
+write.csv(DataBase, file="CreatedData/2008/DataBase_ENLACE2008_Total.csv", row.names = FALSE)
+write.csv(DataBaseCorrecta, file="CreatedData/2008/DataBase_ENLACE2008_Correcta.csv", row.names = FALSE)
 print("Prelims - Done")
+
