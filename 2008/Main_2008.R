@@ -5,6 +5,7 @@ rm(list = ls()) # clear all the environment
 Sys.sleep(2)
 if(Sys.info()["user"]=="MROMEROLO") {
   setwd("D:/Dropbox/Research/Webscrape_Puntajes") 
+  dir_do="D:/git/RScraping/2008/"
 }
 if(Sys.info()["user"]=="mauricio"){
   setwd("/mnt/HDD/Dropbox/Research/Webscrape_Puntajes") 
@@ -17,5 +18,6 @@ if(Sys.info()["user"]=="c1587s") {
 
 source(paste0(dir_do,"prelims_2008.R"))
 # Scraping starts
-tryCatch({source(paste0(dir_do,"Scrape_2008.R"))}, silent=FALSE,error=send_error_email())
-send_noerror_email() # send email if no error occurs
+source(paste0(dir_do,"Scrape_2008.R"))
+#tryCatch({source(paste0(dir_do,"Scrape_2008.R"))}, silent=FALSE,error=send_error_email())
+#send_noerror_email() # send email if no error occurs

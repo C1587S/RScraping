@@ -3,18 +3,15 @@
 # initialize the loop counter
 longList <- nrow(rawData_2008)
 # 1.Open the browser and navigate the URL
-remDr <- remoteDriver(remoteServerAddr = "localhost", port = 4445L, browserName = "firefox")
+remDr <- remoteDriver(remoteServerAddr = "localhost", port = 4445L, browserName = "chrome")
 remDr$open(silent = TRUE) #opens a browser
 url_raw <- 'http://143.137.111.105/Enlace/Legacy/Resultados2008/Basica2008/r08Folio.asp'
 remDr$navigate(url_raw) # Navigate the page with the browser
 
-DataBaseYa=try(fread("CreatedData/2008/DataBase_ENLACE2008_Test2.csv", stringsAsFactors = F),silent=T)
-if (inherits(DataBaseYa, "try-error")) {
-  DataBaseYa=NULL
+DataBaseYa=try(fread("CreatedData/2008/DataBase_ENLACE2008_Total.csv", stringsAsFactors = F),silent=T)
+if (!inherits(DataBaseYa, "try-error")) {
   rawData_2008 <- subset(rawData_2008, !(V1 %in% DataBaseYa$Folio))
 }
-
-rawData_2008=rawData_2008[1:10]
 
 
 for (folioID in rawData_2008$V1){ #rawData_2008
@@ -30,7 +27,7 @@ for (folioID in rawData_2008$V1){ #rawData_2008
   webElem <- remDr$findElement(value = ConsButton) # find the button
   
   result=webElem$clickElement()# click on it
-
+  
   # 3. Extract general information
   suppressMessages(webElemTable <-  try(remDr$findElement(using = 'xpath', value = '/html/body/table[3]'))) # get into the table
   suppressMessages(
@@ -40,7 +37,7 @@ for (folioID in rawData_2008$V1){ #rawData_2008
       webElemTable <- try(remDr$findElement(using = 'xpath', value = '/html/body/table[3]'),silent=T)
     }
   )
-
+  
   
   GeneralTable_parsed <- htmlParse(remDr$getPageSource()[[1]]) # extract the parsed html table
   GeneralTable <- readHTMLTable(GeneralTable_parsed) 
@@ -142,51 +139,53 @@ for (folioID in rawData_2008$V1){ #rawData_2008
     }
   )
   
-  ## Exctract the information
-  for (i in seq(1,length(pregs_mat), by=1)){
-    preguntaID<- pregs_mat[[i]]
-    nroPreguntaID <- paste(preguntaID, "/font/strong", sep ="")
-    nroPreguntaElem <- try(remDr$findElement(value = nroPreguntaID),silent=T)
-    while(inherits(nroPreguntaElem, "try-error")){
-      Sys.sleep(0.5) # This part is mandatory
+  suppressMessages(
+    ## Exctract the information
+    for (i in seq(1,length(pregs_mat), by=1)){
+      preguntaID<- pregs_mat[[i]]
+      nroPreguntaID <- paste(preguntaID, "/font/strong", sep ="")
       nroPreguntaElem <- try(remDr$findElement(value = nroPreguntaID),silent=T)
-    }
-    nroPregunta <- nroPreguntaElem$getElementText()
-    nroPregunta_i <- gsub("(?<![0-9])0+", "", nroPregunta, perl = TRUE) # for omitting leading zeroes
-    nroPregunta_int <- as.integer(nroPregunta_i)
-    print(paste("Matematicas - Scraping question #", nroPregunta_int, "From folio", folioID, "of", longList , sep =" "))
-    # Now, click on each question
-    elemento_preg <- remDr$findElement(value = preguntaID)
-    resultado=try(remDr$executeScript("arguments[0].click();", list(elemento_preg)),silent=T)
-    while(inherits(resultado, "try-error")){
-      Sys.sleep(0.5) # This part is mandatory
-      resultado <- try(remDr$executeScript("arguments[0].click();", list(elemento_preg)),silent=T)
-    }
-    preg_correctaID <- try(remDr$findElement(value = "/html/body/span/table[3]/tbody/tr[1]/td/b"),silent=T)
-    while(inherits(preg_correctaID, "try-error")){
-      Sys.sleep(0.5) # This part is mandatory
+      while(inherits(nroPreguntaElem, "try-error")){
+        Sys.sleep(0.5) # This part is mandatory
+        nroPreguntaElem <- try(remDr$findElement(value = nroPreguntaID),silent=T)
+      }
+      nroPregunta <- nroPreguntaElem$getElementText()
+      nroPregunta_i <- gsub("(?<![0-9])0+", "", nroPregunta, perl = TRUE) # for omitting leading zeroes
+      nroPregunta_int <- as.integer(nroPregunta_i)
+      print(paste("Matematicas - Scraping question #", nroPregunta_int, "From folio", folioID, "of", longList , sep =" "))
+      # Now, click on each question
+      elemento_preg <- remDr$findElement(value = preguntaID)
+      resultado=try(remDr$executeScript("arguments[0].click();", list(elemento_preg)),silent=T)
+      while(inherits(resultado, "try-error")){
+        Sys.sleep(0.5) # This part is mandatory
+        resultado <- try(remDr$executeScript("arguments[0].click();", list(elemento_preg)),silent=T)
+      }
       preg_correctaID <- try(remDr$findElement(value = "/html/body/span/table[3]/tbody/tr[1]/td/b"),silent=T)
+      while(inherits(preg_correctaID, "try-error")){
+        Sys.sleep(0.5) # This part is mandatory
+        preg_correctaID <- try(remDr$findElement(value = "/html/body/span/table[3]/tbody/tr[1]/td/b"),silent=T)
+      }
+      correctaInfo    <- preg_correctaID$getElementText()
+      # when there is no answer 
+      preg_marcadaID <- tryCatch({remDr$findElement(value = "/html/body/span/table[3]/tbody/tr[2]/td/b")}, silent=TRUE,error=function(err) NA)
+      if (typeof(preg_marcadaID)=="S4"){
+        marcadaInfo <- preg_marcadaID$getElementText()
+      } else {
+        marcadaInfo <- "sin_respuesta"
+        print(marcadaInfo)
+      }
+      # Asign values to the database using the question number
+      if(is.na(DataBaseCorrecta[1, paste0("MatCorrecta_",nroPregunta_int)]))  DataBaseCorrecta[1, paste0("MatCorrecta_",nroPregunta_int)]<-as.character(correctaInfo) # Esp correcta (+271 is the correction to math the position in the DF)
+      DataBase[1, paste0("MatMarcada_",nroPregunta_int)] <-as.character(marcadaInfo) # Esp marcada (+401 is the correction to math the position in the DF)
+      # going back to the frame
+      regTablero <- remDr$findElement(value = "/html/body/span/table[4]/tbody/tr/td/span")
+      resultado=try(remDr$executeScript("arguments[0].click();", list(regTablero)),silent=T)
+      while(inherits(resultado, "try-error")){
+        Sys.sleep(0.5) # This part is mandatory
+        resultado <- try(remDr$executeScript("arguments[0].click();", list(regTablero)),silent=T)
+      }
     }
-    correctaInfo    <- preg_correctaID$getElementText()
-    # when there is no answer 
-    preg_marcadaID <- tryCatch({remDr$findElement(value = "/html/body/span/table[3]/tbody/tr[2]/td/b")}, silent=TRUE,error=function(err) NA)
-    if (typeof(preg_marcadaID)=="S4"){
-      marcadaInfo <- preg_marcadaID$getElementText()
-    } else {
-      marcadaInfo <- "sin_respuesta"
-      print(marcadaInfo)
-    }
-    # Asign values to the database using the question number
-    if(is.na(DataBaseCorrecta[1, paste0("MatCorrecta_",nroPregunta_int)]))  DataBaseCorrecta[1, paste0("MatCorrecta_",nroPregunta_int)]<-as.character(correctaInfo) # Esp correcta (+271 is the correction to math the position in the DF)
-    DataBase[1, paste0("MatMarcada_",nroPregunta_int)] <-as.character(marcadaInfo) # Esp marcada (+401 is the correction to math the position in the DF)
-    # going back to the frame
-    regTablero <- remDr$findElement(value = "/html/body/span/table[4]/tbody/tr/td/span")
-    resultado=try(remDr$executeScript("arguments[0].click();", list(regTablero)),silent=T)
-    while(inherits(resultado, "try-error")){
-      Sys.sleep(0.5) # This part is mandatory
-      resultado <- try(remDr$executeScript("arguments[0].click();", list(regTablero)),silent=T)
-    }
-  }
+  )
   # click on regresar to the main page
   regresarBut <- remDr$findElement(value='/html/body/center/table[2]/tbody/tr[1]/td[2]/span/img')
   remDr$executeScript("arguments[0].click();", list(regresarBut))
@@ -194,8 +193,8 @@ for (folioID in rawData_2008$V1){ #rawData_2008
   random_num <- runif(1,1,3)
   Sys.sleep(random_num)
   remDr$navigate(url_raw) # refresh the main page 
-  write.csv(DataBase, file="CreatedData/2008/DataBase_ENLACE2008_Total.csv", row.names = FALSE, append = TRUE,col.names=F)
-  write.csv(DataBase, file="CreatedData/2008/DataBase_ENLACE2008_Correcta.csv", row.names = FALSE,col.names=F)
+  write.table(DataBase, file="CreatedData/2008/DataBase_ENLACE2008_Total.csv", row.names = FALSE, append = TRUE,col.names=F,sep=",")
+  write.table(DataBaseCorrecta, file="CreatedData/2008/DataBase_ENLACE2008_Correcta.csv", row.names = FALSE,col.names=T,sep=",")
   
 } # FOR loop for FOLIO-list ends here
 
