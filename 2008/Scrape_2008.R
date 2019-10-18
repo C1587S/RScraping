@@ -3,7 +3,11 @@
 # initialize the loop counter
 longList <- nrow(rawData_2008)
 # 1.Open the browser and navigate the URL
-remDr <- remoteDriver(remoteServerAddr = "localhost", port = 4445L, browserName = "chrome")
+eCaps <- list(chromeOptions = list(
+  args = c('--no-sandbox','--headless', '--disable-gpu', '--window-size=1280,800','--disable-dev-shm-usage')
+))
+remDr <- remoteDriver(remoteServerAddr = "localhost", port = 4445L, browserName = "chrome",extraCapabilities = eCaps)
+
 remDr$open(silent = TRUE) #opens a browser
 url_raw <- 'http://143.137.111.105/Enlace/Legacy/Resultados2008/Basica2008/r08Folio.asp'
 remDr$navigate(url_raw) # Navigate the page with the browser
