@@ -57,15 +57,17 @@ for (folioID in rawData_2009$V1){ #rawData_2009
   DataBase$Entidad[1] <- as.character(levels(col2Values)[3])
   #  we dont have grado de marginacion for this year
   # 4. General results for: español and matemáticas
-  res_esp <- '//*[contains(concat( " ", @class, " " ), concat( " ", "textoInfo2", " " ))]'
+  res_esp <- '/html/body/span/table[2]/tbody/tr[4]/td[2]'
   ResultEspElem <- remDr$findElement(using = 'xpath', value = res_esp ) # get into the table
   ResultEsp <- ResultEspElem$getElementText()
   # Resultados de matemáticas
-  res_mat <- '//*[contains(concat( " ", @class, " " ), concat( " ", "textoInfo2", " " ))]'
+  res_mat <- '/html/body/span/table[2]/tbody/tr[4]/td[4]'
   ResultMatElem <- remDr$findElement(using = 'xpath', value = res_mat) # get into the table
   ResultMat <- ResultMatElem$getElementText()
   DataBase$PuntajeTotalEsp[1] <- as.integer(ResultEsp)
   DataBase$PuntajeTotalMat[1] <- as.integer(ResultMat)
+  
+  
   
   # 5. Respuesta de mi hija(o) en Español
   CalifEspanolButton <- '/html/body/map/area[2]'
@@ -91,7 +93,7 @@ suppressMessages(
   nroPregunta <- nroPreguntaElem$getElementText()
   nroPregunta_i <- gsub("(?<![0-9])0+", "", nroPregunta, perl = TRUE) # for omitting leading zeroes
   nroPregunta_int <- as.integer(nroPregunta_i)
-  print(paste("Matemáticas - Scraping question #", nroPregunta_int, "From folio", folioID, "of", longList , sep =" "))
+  print(paste("Español - Scraping question #", nroPregunta_int, "From folio", folioID, "of", longList , sep =" "))
   # Now, click on each question
   elemento_preg <- remDr$findElement(value = preguntaID)
   resultado = try(remDr$executeScript("arguments[0].click();", list(elemento_preg)), silent=T)
