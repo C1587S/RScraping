@@ -10,7 +10,7 @@ MuteMessages(library(rJava))
 MuteMessages(library(bigstep))
 #--------------------------------------
 # Import FOLIOs data
-rawData_2009 <- fread('/Users/c1587s/Dropbox/Webscrape_Puntajes/RawData/Basica2009.csv', header = FALSE, skip=1)
+rawData_2009 <- fread('/Users/c1587s/Dropbox/Webscrape_Puntajes/RawData/Basica2009.csv', header=FALSE, skip=1)
 columnasN <- nrow(rawData_2009)
 #--------------------------------------
 # Create and empty dataframe
@@ -23,41 +23,38 @@ for (i in seq(1, 130, by=1)) {
   Esp_correcta[[i]] <- paste("EspCorrecta", as.character(i), sep="_")
   Esp_marcada[[i]] <- paste("EspMarcada", as.character(i), sep="_")
 }
-dataBase_names <- c(pregs_gral_names, Esp_correcta, Esp_marcada, Mat_correcta, Mat_marcada)
-DataBase = data.frame(matrix(ncol=531,nrow=3))
+#dataBase_names <- c(pregs_gral_names, Esp_correcta, Esp_marcada, Mat_correcta, Mat_marcada)
+dataBase_names <- c(pregs_gral_names, Esp_marcada, Mat_marcada)
+DataBase = data.frame(matrix(ncol=length(Esp_marcada)+length(Mat_marcada)+length(pregs_gral_names),nrow=1))
 colnames(DataBase) <- dataBase_names
 DataBase <- data.frame(lapply(DataBase, as.character), stringsAsFactors=FALSE)
 
+dataBase_names <- c(Esp_correcta, Mat_correcta)
+DataBaseCorrecta = data.frame(matrix(ncol=length(Esp_correcta)+length(Mat_correcta),nrow=1))
+colnames(DataBaseCorrecta) <- dataBase_names
+DataBaseCorrecta <- data.frame(lapply(DataBaseCorrecta, as.character), stringsAsFactors=FALSE)
 #--------------------------------------
 # List of Español question
 ## T1: Compresion lectora
-Esp_first_col_T1  <- c(); Esp_second_col_T1 <- c(); Esp_third_col_T1  <- c();
-Esp_fourth_col_T1 <- c(); Esp_fifth_col_T1  <- c()
+Esp_first_col_T1  <- c(); Esp_second_col_T1 <- c(); Esp_third_col_T1  <- c(); Esp_fourth_col_T1 <- c(); 
 ## T2: Reflexion sobre la lengua
- Esp_first_col_T2 <- c()
+Esp_first_col_T2 <- c()
 
 for (i in seq(1,10, by=1)){
-  Esp_first_col_T1[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[1]/td[",
-                                 as.character(i), "]/a", sep="")
-
-  Esp_second_col_T1[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[2]/td[",
-                                  as.character(i), "]/a", sep="")
-
-  Esp_third_col_T1[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[3]/td[",
-                                 as.character(i), "]/a", sep="")
-
-  Esp_fourth_col_T1[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[4]/td[",
-                                  as.character(i), "]/a", sep="")
-  Esp_first_col_T2[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[3]/td[2]/table/tbody/tr/td[",
-                                 as.character(i), "]/a", sep="")
+  Esp_first_col_T1[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[2]/td[2]/table/tbody/tr[1]/td[",
+                                  as.character(i), "]/a")
+  Esp_second_col_T1[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[2]/td[2]/table/tbody/tr[2]/td[",
+                                   as.character(i), "]/a")
+  Esp_third_col_T1[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[2]/td[2]/table/tbody/tr[3]/td[",
+                                  as.character(i), "]/a")
+  Esp_fourth_col_T1[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[2]/td[2]/table/tbody/tr[4]/td[",
+                                   as.character(i), "]/a")
+  Esp_first_col_T2[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[3]/td[2]/table/tbody/tr/td[",
+                                  as.character(i), "]/a")
+  
 }
-for (i in seq(1,1, by=1)){
-  Esp_fifth_col_T1[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[5]/td[",
-                                 as.character(i), "]/a", sep="")
-}
-
 # Pasting elements
-Esp_T1 <- c(Esp_first_col_T1, Esp_second_col_T1, Esp_third_col_T1, Esp_fourth_col_T1, Esp_fifth_col_T1)#
+Esp_T1 <- c(Esp_first_col_T1, Esp_second_col_T1, Esp_third_col_T1, Esp_fourth_col_T1)#
 Esp_T2 <- c(Esp_first_col_T2)
 pregs_esp <- c(Esp_T1,Esp_T2)
 
@@ -77,29 +74,29 @@ Mat_first_col_T5 <- c()
 Mat_first_col_T6 <- c()
 
 for (i in seq(1,10, by=1)){
-  Mat_first_col_T1[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[1]/td[",
-                          as.character(i), "]/a", sep="")
-  Mat_second_col_T1[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[2]/td[",
-                          as.character(i), "]/a", sep="")
+  Mat_first_col_T1[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[2]/td[2]/table/tbody/tr[1]/td[",
+                                  as.character(i), "]/a")
+  Mat_second_col_T1[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[2]/td[2]/table/tbody/tr[2]/td[",
+                                   as.character(i), "]/a")
 }
-for (i in seq(1,7, by=1)){
-  Mat_third_col_T1[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[3]/td[",
-                          as.character(i), "]/a", sep="")
+for (i in seq(1,8, by=1)){
+  Mat_third_col_T1[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[2]/td[2]/table/tbody/tr[3]/td[",
+                                  as.character(i), "]/a")
 }
 for (i in seq(1,6, by=1)){
-  Mat_first_col_T3[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[4]/td[2]/table/tbody/tr/td[",
-                          as.character(i), "]/a", sep="")
-  Mat_first_col_T4[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[3]/td[2]/table/tbody/tr/td[",
-                          as.character(i), "]/a", sep="")
-  Mat_first_col_T5[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[3]/td[2]/table/tbody/tr/td[",
-                          as.character(i), "]/a", sep="")
+  
+  Mat_first_col_T3[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[4]/td[2]/table/tbody/tr/td[",
+                                  as.character(i), "]/a")
+  Mat_first_col_T4[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[5]/td[2]/table/tbody/tr/td[",
+                                  as.character(i), "]/a")
+  Mat_first_col_T5[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[6]/td[2]/table/tbody/tr/td[",
+                                  as.character(i), "]/a")
 }
-for (i in seq(1,4, by=1)){
-  Mat_first_col_T2[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[3]/td[2]/table/tbody/tr/td[",
-                          as.character(i), "]/a", sep="")
+for (i in seq(1,3, by=1)){
+  Mat_first_col_T2[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[3]/td[2]/table/tbody/tr/td[",
+                                  as.character(i), "]/a")
 }
-Mat_first_col_T6[[1]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[3]/td[2]/table/tbody/tr/td[",
-                          as.character(1), "]/a", sep="")
+Mat_first_col_T6[[1]] <- paste0("/html/body/span/table[2]/tbody/tr[7]/td[2]/table/tbody/tr/td/a")
 # Pasting elements
 Mat_T1 <- c(Mat_first_col_T1, Mat_second_col_T1, Mat_third_col_T1)
 Mat_T2 <- c(Mat_first_col_T2)
@@ -123,7 +120,7 @@ send_error_email <- function(){
                         passwd = "ServidorScrape1", ssl = TRUE),
             authenticate = TRUE,
             send = TRUE)
-
+  
 }
 
 # Send an e-mail when the process finished without errors
@@ -140,3 +137,7 @@ send_noerror_email <- function(){
             authenticate = TRUE,
             send = TRUE)
 }
+
+write.csv(DataBase, file="CreatedData/2009/DataBase_ENLACE2009_Total.csv", row.names = FALSE)
+write.csv(DataBaseCorrecta, file="CreatedData/2009/DataBase_ENLACE2009_Correcta.csv", row.names = FALSE)
+print("Prelims - Done")
