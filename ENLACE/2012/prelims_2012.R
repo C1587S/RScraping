@@ -7,11 +7,12 @@ MuteMessages(library(data.table))
 MuteMessages(library(sendmailR))
 MuteMessages(library(mailR))
 MuteMessages(library(rJava))
+MuteMessages(library(bigstep))
 #--------------------------------------
 # Import FOLIOs data
 rawData_2012 <- fread('RawData/Basica2012.csv', header = FALSE, skip=1)
 columnasN <- nrow(rawData_2012)
-#--------------------------------------
+#------------------------------------
 # Create and empty dataframe
 pregs_gral_names <-  c("Folio", "Grado", "Grupo", "Turno", "TipoDeEscuela", "NombreDeLaEscuela", "CCT", "Entidad", "GradoDeMarginacion", "PuntajeTotalEsp", "PuntajeTotalMat")
 # List of names for Español questions
@@ -22,11 +23,17 @@ for (i in seq(1, 130, by=1)) {
   Esp_correcta[[i]] <- paste("EspCorrecta", as.character(i), sep="_")
   Esp_marcada[[i]] <- paste("EspMarcada", as.character(i), sep="_")
 }
-dataBase_names <- c(pregs_gral_names, Esp_correcta, Esp_marcada, Mat_correcta, Mat_marcada)
-DataBase = data.frame(matrix(ncol=531,nrow=3))
+#dataBase_names <- c(pregs_gral_names, Esp_correcta, Esp_marcada, Mat_correcta, Mat_marcada)
+dataBase_names <- c(pregs_gral_names, Esp_marcada, Mat_marcada)
+DataBase = data.frame(matrix(ncol=length(Esp_marcada)+length(Mat_marcada)+length(pregs_gral_names),nrow=1))
 colnames(DataBase) <- dataBase_names
 DataBase <- data.frame(lapply(DataBase, as.character), stringsAsFactors=FALSE)
 
+
+dataBase_names <- c(Esp_correcta, Mat_correcta)
+DataBaseCorrecta = data.frame(matrix(ncol=length(Esp_correcta)+length(Mat_correcta),nrow=1))
+colnames(DataBaseCorrecta) <- dataBase_names
+DataBaseCorrecta <- data.frame(lapply(DataBaseCorrecta, as.character), stringsAsFactors=FALSE)
 #--------------------------------------
 # List of Español questions
 # T1: Aspectos semánticos y sintácticos de los textos
@@ -160,6 +167,6 @@ send_noerror_email <- function(){
             send = TRUE)
 }
 
-
-
+write.csv(DataBase, file="CreatedData/2012/DataBase_ENLACE2012_Total.csv", row.names = FALSE)
+write.csv(DataBaseCorrecta, file="CreatedData/2012/DataBase_ENLACE2012_Correcta.csv", row.names = FALSE)
 print("Prelims - Done")
