@@ -6,33 +6,14 @@ MuteMessages(library(sendmailR))
 MuteMessages(library(mailR))
 MuteMessages(library(rJava))
 
-# -----------------------------
-## Create an empty dataframe with the name of variables
-DataFrame <- data.frame(cicloEscolar = character(0),
-                        entidad= character(0),
-                        nivelEducativo = character(0),
-                        concurso = character(0),
-                        tipoConcurso = character(0),
-                        subsistema= character(0),
-                        tipoEvaluacion= character(0),
-                        idoneos = character(0),
-                        idoneosAsignados= character(0),
-                        concurso_info = character(0),
-                        entidad_info= character(0),
-                        subsistema_info= character(0),
-                        folio_info= character(0),
-                        prelacion_info= character(0),
-                        tipoPlaza_info= character(0),
-                        curp_info= character(0),
-                        tipoEvaluacion_info= character(0),
-                        tipoVacante_info= character(0),
-                        sostenimiento_info= character(0),
-                        numeroroHoras_info= character(0),
-                        fechaInicioVacante_info= character(0),
-                        fechaFinVacante_info= character(0),
-                        CCTlabora_info= character(0),
-                        clavePlaza_info= character(0))
-
+DataFrame_colNames <- c("cicloEscolar", "entidad", "nivelEducativo", "concurso", "tipoConcurso", "subsistema",
+                        "tipoEvaluacion", "idoneos", "idoneosAsignados", "concurso", "entidad", 
+                        "subsistema", "folio", "prelacion", "tipoPlaza", "curp",
+                        "tipoEvaluacion", "tipoVacante", "sostenimiento", "numeroroHoras",
+                        "fechaInicioVacante", "fechaFinVacante", "CCTlabora", "clavePlaza")
+DataBase <- data.frame(matrix(ncol =  length(DataFrame_colNames), nrow = 1))
+colnames(DataBase) <- DataFrame_colNames
+DataBase <- data.frame(lapply(DataBase, as.character), stringsAsFactors=FALSE)
 #--------------------------------------
 # Create list of options for all sections
 # ciclo escolar / ENTER
@@ -52,7 +33,7 @@ ops_NivelEduc <- '//*[(@id="react-select-4--option-1")]'
 # Send and e-mail if an error occurs
 send_error_email <- function(){
   sender <- "servidorscrapingr@gmail.com"
-  recipients <- c(" Mauricio Romero Londoño <mauricioromerolondono@gmail.com>", "Sebastian Cadavid Sanchez <s.cadavid1587@gmail.com>") 
+  recipients <- c("Sebastian Cadavid Sanchez <s.cadavid1587@gmail.com>") 
   send.mail(from = sender,
             to = recipients,
             subject = "El proceso de scraping ENLACE - 2008 se detuvo.",
@@ -68,7 +49,7 @@ send_error_email <- function(){
 # Send an e-mail when the process finished without errors
 send_noerror_email <- function(){
   sender <- "servidorscrapingr@gmail.com"
-  recipients <- c(" Mauricio Romero Londoño <mauricioromerolondono@gmail.com>", "Sebastian Cadavid Sanchez <s.cadavid1587@gmail.com>") 
+  recipients <- c("Sebastian Cadavid Sanchez <s.cadavid1587@gmail.com>") # " Mauricio Romero Londoño <mauricioromerolondono@gmail.com>"
   send.mail(from = sender,
             to = recipients,
             subject = "El proceso de scraping Plazas Asignadas se detuvo.",
@@ -80,4 +61,5 @@ send_noerror_email <- function(){
             send = TRUE)
 }
 
+write.csv(DataBase, file="DataBase_PlazasAsignadas_Superior.csv", row.names = F)
 print("Prelims - Done")
