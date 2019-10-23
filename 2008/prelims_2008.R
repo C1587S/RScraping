@@ -17,7 +17,7 @@ columnasN <- nrow(rawData_2008)
 pregs_gral_names <-  c("Folio", "Grado", "Grupo", "Turno", "TipoDeEscuela", "NombreDeLaEscuela", "CCT", "Entidad", "GradoDeMarginacion", "PuntajeTotalEsp", "PuntajeTotalMat")
 # List of names for Español questions
 Mat_correcta <- c(); Mat_marcada <- c(); Esp_correcta <- c(); Esp_marcada <- c()
-for (i in seq(1, 150, by=1)) {
+for (i in seq(1, 160, by=1)) {
   Mat_correcta[[i]] <- paste("MatCorrecta", as.character(i), sep="_")
   Mat_marcada[[i]] <- paste("MatMarcada", as.character(i), sep="_")
   Esp_correcta[[i]] <- paste("EspCorrecta", as.character(i), sep="_")
