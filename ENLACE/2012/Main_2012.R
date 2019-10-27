@@ -1,6 +1,3 @@
-# Main script
-#.rs.restartR() # restart R session
-#Sys.sleep(4)
 rm(list = ls()) # clear all the environment
 Sys.sleep(2)
 if(Sys.info()["user"]=="MROMEROLO") {
