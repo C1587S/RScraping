@@ -1,4 +1,4 @@
-# SCRAPING starts Here
+# ---- SCRAPING starts Here
 #shell('docker run -d -p 4445:4444 selenium/standalone-firefox')
 # initialize the loop counter
 longList <- nrow(rawData_2012)
