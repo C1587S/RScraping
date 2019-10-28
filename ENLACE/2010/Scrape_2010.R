@@ -37,7 +37,7 @@ for (folioID in rawData_2010$V1){ #rawData_2010
   suppressMessages(webElemTable <- try(remDr$findElement(using = 'xpath', value = '/html/body/form/div[3]/center/div[1]/div[2]/table'), silent=T)) # get into the table
   suppressMessages(
     while(inherits(webElemTable, "try-error")){
-      webElem$clickElement()
+      #webElem$clickElement()
       webElemTable <- try(remDr$findElement(using = 'xpath', value = '/html/body/form/div[3]/center/div[1]/div[2]/table'), silent=T)
       }
     )
