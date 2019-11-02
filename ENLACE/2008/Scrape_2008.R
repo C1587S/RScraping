@@ -1,7 +1,7 @@
 # ----- SCRAPING starts Here
 #shell('docker run -d -p 4445:4444 selenium/standalone-firefox')
 # initialize the loop counter
-Scrape_2008 <- function(){
+
   
   longList <- nrow(rawData_2008)
   # 1.Open the browser and navigate the URL
@@ -13,13 +13,13 @@ Scrape_2008 <- function(){
   remDr$open(silent = TRUE) #opens a browser
   url_raw <- 'http://143.137.111.105/Enlace/Legacy/Resultados2008/Basica2008/r08Folio.asp'
   remDr$navigate(url_raw) # Navigate the page with the browser
-  
+
   DataBaseYa=try(fread("CreatedData/2008/DataBase_ENLACE2008_Total.csv", stringsAsFactors = F),silent=T)
   if (!inherits(DataBaseYa, "try-error")) {
     rawData_2008 <- subset(rawData_2008, !(V1 %in% DataBaseYa$Folio))
   }
-  
-  
+
+Scrape_2008 <- function(){  
   for (folioID in rawData_2008$V1){ #rawData_2008
     try(remDr$close(),silent=T)
     remDr$open(silent = TRUE) #opens a browser
@@ -27,7 +27,7 @@ Scrape_2008 <- function(){
     remDr$navigate(url_raw) # Navigate the page with the browser
     # 2. Fill in the form to make the query with FOLIO keys
     print(paste("Now in folio ", folioID))
-    webElem<-remDr$findElement(using = 'xpath', value = '//*[@id="Usuario"]', retry = T) # find the form
+    webElem<-remDr$findElement(using = 'xpath', value = '//*[@id="Usuario"]') # find the form
     webElem$sendKeysToElement(list(folioID)) # fill in the form with the folio number
     ConsButton <- '/html/body/div/form/table/tbody/tr[3]/td/table/tbody/tr/td[2]/div/img' # xpath to the "consultar" button
     webElem <- remDr$findElement(value = ConsButton) # find the button
