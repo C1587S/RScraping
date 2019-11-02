@@ -347,12 +347,12 @@ send_noerror_email <- function(){
 
 
 ## function for retrying
-retry <- function(.FUN, max.attempts = 3, sleep.seconds = 0.5) {
+retry <- function(.FUN, max.attempts = 50, sleep.seconds = 0.5) {
   expr <- substitute(.FUN)
   retry_expr(expr, max.attempts, sleep.seconds)
 }
 
-retry_expr <- function(expr, max.attempts = 3, sleep.seconds = 0.5) {
+retry_expr <- function(expr, max.attempts = 50, sleep.seconds = 0.5) {
   x <- try(eval(expr))
   
   if(inherits(x, "try-error") && max.attempts > 0) {
