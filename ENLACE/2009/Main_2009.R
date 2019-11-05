@@ -17,8 +17,8 @@ if(Sys.info()["user"]=="c1587s") {
 }
 
 source(paste0(dir_do,"prelims_2009.R"))
-# Scraping starts
 source(paste0(dir_do,"Scrape_2009.R"))
-
-# tryCatch({source("Scrape_2009.R")}, silent=FALSE,error=send_error_email())
-# send_noerror_email() # send email if no error occursø
+# Scraping starts
+retry(Scrape_2009())
+#tryCatch({source(paste0(dir_do,"Scrape_2008.R"))}, silent=FALSE,error=send_error_email())
+#send_noerror_email() # send email if no error occurs
