@@ -93,6 +93,8 @@ for (folioID in rawData_2009$V1){ #rawData_2009
     pregs_mat=pregs_mat_case1; pregs_esp=pregs_esp_case1
   } else if(nroPregunta1_int == 12) {
     pregs_mat=pregs_mat_case2; pregs_esp=pregs_esp_case2
+  } else if(nroPregunta1_int == 23) {
+    pregs_mat=pregs_mat_case3; pregs_esp=pregs_esp_case3
   } else {
     print("The case is not identified, please check and include it in prelims_2009.R")
   }
