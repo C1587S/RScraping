@@ -344,8 +344,8 @@ send_noerror_email <- function(){
             send = TRUE)
 }
 
-# write.csv(DataBase, file="CreatedData/2009/DataBase_ENLACE2009_Total.csv", row.names = FALSE)
-# write.csv(DataBaseCorrecta, file="CreatedData/2009/DataBase_ENLACE2009_Correcta.csv", row.names = FALSE)
+write.csv(DataBase, file="CreatedData/2009/DataBase_ENLACE2009_Total.csv", row.names = FALSE)
+write.csv(DataBaseCorrecta, file="CreatedData/2009/DataBase_ENLACE2009_Correcta.csv", row.names = FALSE)
 
 ## function for retrying
 retry <- function(.FUN, max.attempts = 10000, sleep.seconds = 0.5) {
