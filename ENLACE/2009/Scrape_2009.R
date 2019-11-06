@@ -2,7 +2,7 @@
 #shell('docker run -d -p 4445:4444 selenium/standalone-chrome')
 # initialize the loop counter
 
-Scrape_2009 <- function(){  
+Scrape_2009 <- function(){
 longList <- nrow(rawData_2009)
 # 1.Open the browser and navigate the URL
 eCaps <- list(chromeOptions = list(

@@ -285,7 +285,7 @@ for (i in seq(1,6, by=1)){
                                   as.character(i), "]/a")
 }
 for (i in seq(1,4, by=1)){
-  Mat_first_col_T7[[i]] <- paste0("}/html/body/span/table[2]/tbody/tr[8]/td[2]/table/tbody/tr/td[",
+  Mat_first_col_T7[[i]] <- paste0("/html/body/span/table[2]/tbody/tr[8]/td[2]/table/tbody/tr/td[",
                                   as.character(i), "]/a")
 }
 for (i in seq(1,3, by=1)){
