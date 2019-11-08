@@ -1,0 +1,13 @@
+Nota: Hasta ahora hay 4 casos definidos de patrones de pregunta. Es posible que a medida que el scraper avance se pueda estancar en un ciclo infinito o avise que el patrón no existe. En dado caso, es necesario verificar el folio problemático en la página web, identificar el patrón de preguntas y añadirlo a `prelims_2009.R`.
+
+El ejercicio se ejecuta siguiendo los siguientes pasos:
+
+1 - En la terminal correr la siguiente línea de código (una vez se ha instalado el contenedor de rselenium en docker):
+```
+$ docker run -d -p 4445:4444 selenium/standalone-chrome
+
+```
+2 - Ejecutar en R o Rstudio:
+``` {R}
+source("Main_2008.R")
+```
