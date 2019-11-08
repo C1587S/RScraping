@@ -1,7 +1,7 @@
 # ----- SCRAPING starts Here
 #shell('docker run -d -p 4445:4444 selenium/standalone-firefox')
 # initialize the loop counter
-Scrape_2008 <- function(){  
+Scrape_2008 <- function(){
   longList <- nrow(rawData_2008)
   # 1.Open the browser and navigate the URL
   eCaps <- list(chromeOptions = list(
@@ -220,6 +220,6 @@ Scrape_2008 <- function(){
     
   } # FOR loop for FOLIO-list ends here
   
-  
-  
+#   
+#   
 } # function ends
