@@ -61,5 +61,24 @@ send_noerror_email <- function(){
             send = TRUE)
 }
 
+# create csv file
 write.csv(DataBase, file="DataBase_PlazasAsignadas_Superior.csv", row.names = F)
+
+
+## function for retrying
+retry <- function(.FUN, max.attempts = 10000, sleep.seconds = 0.5) {
+  expr <- substitute(.FUN)
+  retry_expr(expr, max.attempts, sleep.seconds)
+}
+
+retry_expr <- function(expr, max.attempts = 10000, sleep.seconds = 0.5) {
+  x <- try(eval(expr))
+  
+  if(inherits(x, "try-error") && max.attempts > 0) {
+    Sys.sleep(sleep.seconds)
+    return(retry_expr(expr, max.attempts - 1))
+  }
+  
+  x
+}
 print("Prelims - Done")

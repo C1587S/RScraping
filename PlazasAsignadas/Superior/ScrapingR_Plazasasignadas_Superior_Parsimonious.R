@@ -13,16 +13,27 @@ remDr$open(silent = TRUE) #opens a browser
 url_raw <- 'http://balanceador.cnspd.mx/AsignacionDePlazas/consulta/'
 remDr$navigate(url_raw) # Navigate the page with the browser
 Sys.sleep(0.5)
-
+remDr$screenshot(display = TRUE)
 # -----------------------------
 # 1. ciclo escolar / ENTER
-cicloEscolar_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div[1]/div[1]/div')
-cicloEscolar_elem$clickElement()
-
 # click en opciones de ciclo escolar
 for (optionCE in ops_cicloEscolar){
+  resultado = try(cicloEscolar_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div[1]/div[1]/div'), silent=T)
+  suppressMessages(
+    while(inherits(resultado, "try-error")){
+      Sys.sleep(0.5) # This part is mandatory
+      resultado = try(cicloEscolar_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div[1]/div[1]/div'), silent=T)
+    }
+  )   
+  cicloEscolar_elem$clickElement()
   click_cicloEsc <- optionCE
-  cicloEscolar_elemX <- remDr$findElement(value = click_cicloEsc)
+  resultado = try(cicloEscolar_elemX <- remDr$findElement(value = click_cicloEsc), silent=T)
+  suppressMessages(
+    while(inherits(resultado, "try-error")){
+      Sys.sleep(0.5) # This part is mandatory
+      resultado = try(cicloEscolar_elemX <- remDr$findElement(value = click_cicloEsc), silent=T)
+    }
+  )    
   resultado = try(cicloEscolar_elemX$clickElement(), silent=T)
   suppressMessages(
     while(inherits(resultado, "try-error")){
@@ -36,13 +47,27 @@ for (optionCE in ops_cicloEscolar){
   
   # -----------------------------
   # 2. Click en opciones de Entidad
-  entidad_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div/div[2]/div/div')
+  resultado = try(entidad_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div/div[2]/div/div'), silent=T)
+  suppressMessages(
+    while(inherits(resultado, "try-error")){
+      Sys.sleep(0.5) # This part is mandatory
+      resultado <- try(entidad_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div/div[2]/div/div'), silent=T)
+    }
+  )  
+  
   entidad_elem$clickElement()
   
   for (optionEnt in ops_entidad){
     # click_entidad <- ops_entidad[[1]]
     click_entidad <- optionEnt
-    entidad_elemX <- remDr$findElement(value = click_entidad)
+    resultado = try(entidad_elemX <- remDr$findElement(value = click_entidad), silent=T)
+    suppressMessages(
+      while(inherits(resultado, "try-error")){
+        Sys.sleep(0.5)
+        resultado = try(entidad_elemX <- remDr$findElement(value = click_entidad), silent=T)
+      }
+    )  
+    
     resultado = try(entidad_elemX$clickElement(), silent=T)
     suppressMessages(
       while(inherits(resultado, "try-error")){
@@ -52,7 +77,12 @@ for (optionCE in ops_cicloEscolar){
     )  
     # -----------------------------
     # 3. Nivel educativo / ENTER
-    NivelEducativo_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div/div[3]/div/div')
+    resultado = try(NivelEducativo_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div/div[3]/div/div'), silent=T)
+    suppressMessages(
+      while(inherits(resultado, "try-error")){
+        NivelEducativo_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div/div[3]/div/div')
+      }
+    )      
     
     resultado = try(NivelEducativo_elem$clickElement(), silent=T)
     suppressMessages(
@@ -62,9 +92,14 @@ for (optionCE in ops_cicloEscolar){
     )  
     
     click_NivelEduc<- ops_NivelEduc
-    Entidad_elemX <- remDr$findElement(value = click_NivelEduc)
-    Entidad_elemX$clickElement()
+    resultado = try(Entidad_elemX <- remDr$findElement(value = click_NivelEduc), silent=T)
+    suppressMessages(
+      while(inherits(resultado, "try-error")){
+        resultado <- try(Entidad_elemX <- remDr$findElement(value = click_NivelEduc), silent=T)
+      }
+    )  
     
+    Entidad_elemX$clickElement()
     
     # Click on consultar
     Consultar_boton <- remDr$findElement(value= '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div[2]/a')
@@ -76,6 +111,7 @@ for (optionCE in ops_cicloEscolar){
       }
     )  
     Sys.sleep(1)
+    print("Done")
     # se guarda la información de las casillas amarilla y verde
     # Idóneos
     idoneos_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/div[2]/div[1]/div[1]/p[1]')
@@ -97,12 +133,6 @@ for (optionCE in ops_cicloEscolar){
       element_i_xpath <- paste0('//tr[(((count(preceding-sibling::*) + 1) = ', 
                                 as.character(element),
                                 ') and parent::*)]//*[contains(concat( " ", @class, " " ), concat( " ", "glyphicon-info-sign", " " ))]')
-      
-      
-      element_i_xpath <- paste0('//tr[(((count(preceding-sibling::*) + 1) = ', 
-                                as.character(1),
-                                ') and parent::*)]//*[contains(concat( " ", @class, " " ), concat( " ", "glyphicon-info-sign", " " ))]')
-      
       plazaAsignada_elemento_i <- remDr$findElement(value =element_i_xpath)
       resultado = try(plazaAsignada_elemento_i$clickElement(), silent=T)
       suppressMessages(
@@ -193,16 +223,16 @@ for (optionCE in ops_cicloEscolar){
       )  
       Sys.sleep(0.5)
       # mostrar progreso
-      print(paste("Entidad:", entidad_info, " - Ciclo escolar", cicloEsco_info, "- Folio:", folio_info), sep = " ")
-    }
-    # Añadir columna al archivo csv
-    DataBase <- data.frame(lapply(DataBase, as.character), stringsAsFactors=FALSE)
-    write.table(DataBase, file="DataBase_PlazasAsignadas_Superior.csv", row.names = F, append = T, col.names=F,sep=",")
-
+      print(paste("Elemento",element, "Entidad:", entidad_info, " - Ciclo escolar", cicloEsco_info, "- Folio:", folio_info), sep = " ")
     
-    # if multiple of 100, click on the next button
-    if (element/100 == 1) {verMas_boton <- remDr$findElement(value = '/html/body/div[2]/div/div/div[3]/div/div[2]/a')}  
-    else {next} 
+     # Añadir fila al archivo csv
+      DataBase <- data.frame(lapply(DataBase, as.character), stringsAsFactors=FALSE)
+      write.table(DataBase, file="DataBase_PlazasAsignadas_Superior.csv", row.names = FALSE, append = TRUE,col.names=F,sep=",")
+      if (element%%100 == 0) {verMas_boton <- remDr$findElement(value = '/html/body/div[2]/div/div/div[3]/div/div[2]/a')}  
+      else {next} 
+      }
+
   } # ends loop for 2. Entidad 
 } # ends loop for 1. ciclo escolar
+
 
