@@ -13,6 +13,11 @@ DataFrame_colNames <- c("cicloEscolar", "nivelEducativo","entidad", "idoneos", "
                         "tipoEvaluacion", "tipoVacante", "sostenimiento",
                         "numeroHoras", "fechaInicioVacante", "fechaFinVacante",
                         "CCTlabora", "clavePlaza")
+
+ListaPLazas_colNames <- c("ClavePlaza")
+DB_listaPlazas <- data.frame(matrix(ncol =  1, nrow = 1))
+colnames(DB_listaPlazas) <- ListaPLazas_colNames
+
 DataBase <- data.frame(matrix(ncol =  length(DataFrame_colNames), nrow = 1))
 colnames(DataBase) <- DataFrame_colNames
 DataBase <- data.frame(lapply(DataBase, as.character), stringsAsFactors=F)
@@ -35,8 +40,8 @@ send_error_email <- function(){
   recipients <- c(" Mauricio Romero Londoño <mauricioromerolondono@gmail.com>", "Sebastian Cadavid Sanchez <s.cadavid1587@gmail.com>") 
   send.mail(from = sender,
             to = recipients,
-            subject = "El proceso de scraping ENLACE - 2008 se detuvo.",
-            body = "El proceso de scraping Plazas Asignadas se detuvo porque ocurrió un error.",
+            subject = "El proceso de scraping Plazas Asignadas se detuvo.",
+            body = "El proceso se detuvo porque finalizó sin errores.",
             smtp = list(host.name = "smtp.gmail.com", port = 465,
                         user.name = "servidorscrapingr@gmail.com",
                         passwd = "ServidorScrape1", ssl = TRUE),
@@ -62,6 +67,7 @@ send_noerror_email <- function(){
 
 # create csv file
 write.csv(DataBase, file="DataBase_PlazasAsignadas_Basica.csv", row.names = F)
+write.csv(DB_listaPlazas, file="Lista_ClavesPlazasAsignadas_Basica.csv", row.names = F)
 ## function for retrying
 retry <- function(.FUN, max.attempts = 10000, sleep.seconds = 0.5) {
   expr <- substitute(.FUN)
@@ -77,5 +83,11 @@ retry_expr <- function(expr, max.attempts = 10000, sleep.seconds = 0.5) {
   
   x
 }
+
+# do nothing function
+do_nothing = function(){
+  invisible()
+}
+
 print("Prelims - Done")
 
