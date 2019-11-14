@@ -6,11 +6,14 @@ MuteMessages(library(sendmailR))
 MuteMessages(library(mailR))
 MuteMessages(library(rJava))
 
-DataFrame_colNames <- c("cicloEscolar", "entidad", "nivelEducativo", "concurso", "tipoConcurso", "subsistema",
-                        "tipoEvaluacion", "idoneos", "idoneosAsignados", "concurso", "entidad", 
-                        "subsistema", "folio", "prelacion", "tipoPlaza", "curp",
-                        "tipoEvaluacion", "tipoVacante", "sostenimiento", "numeroroHoras",
-                        "fechaInicioVacante", "fechaFinVacante", "CCTlabora", "clavePlaza")
+DataFrame_colNames <- c("cicloEscolar","nivelEducativo", "entidad", "idoneos", "idoneosAsignados",
+                        "concurso", "folio",
+                        "prelacion", "tipoPlaza", "curp",
+                        "tipoEvaluacion", "tipoVacante", "sostenimiento",
+                        "numeroHoras", "fechaInicioVacante", "fechaFinVacante",
+                        "CCTlabora", "clavePlaza",
+                        "subsistema")
+
 DataBase <- data.frame(matrix(ncol =  length(DataFrame_colNames), nrow = 1))
 colnames(DataBase) <- DataFrame_colNames
 DataBase <- data.frame(lapply(DataBase, as.character), stringsAsFactors=FALSE)
@@ -81,4 +84,10 @@ retry_expr <- function(expr, max.attempts = 10000, sleep.seconds = 0.5) {
   
   x
 }
+
+# do nothing function
+do_nothing = function(){
+  invisible()
+}
+
 print("Prelims - Done")
