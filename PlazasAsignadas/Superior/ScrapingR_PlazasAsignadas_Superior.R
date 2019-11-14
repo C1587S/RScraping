@@ -14,7 +14,6 @@ remDr$open(silent = TRUE) #opens a browser
 url_raw <- 'http://balanceador.cnspd.mx/AsignacionDePlazas/consulta/'
 remDr$navigate(url_raw) # Navigate the page with the browser
 Sys.sleep(0.2)
-# remDr$screenshot(display = TRUE)
 # -----------------------------
 # 1. ciclo escolar / ENTER
 # click en opciones de ciclo escolar
@@ -93,7 +92,6 @@ for (optionCE in ops_cicloEscolar){
       }
     ) 
     Sys.sleep(0.3)
-    # remDr$screenshot(display = TRUE)
     # -----------------------------
     # 3. Nivel educativo / ENTER
     resultado = try(NivelEducativo_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div/div[3]/div/div'), silent=T)
@@ -138,7 +136,6 @@ for (optionCE in ops_cicloEscolar){
         resultado <- try(Consultar_boton$clickElement(), silent=T)
       }
     )  
-    # remDr$screenshot(display = TRUE)
     # Extract information:
     # se guarda la información de las casillas amarilla y verde
     # Idóneos
@@ -189,7 +186,6 @@ for (optionCE in ops_cicloEscolar){
       }  else {
         do_nothing()
       } 
-      remDr$screenshot(display = TRUE)
       # find: Sin información disponibles para los filtros seleccionados
       element_i_xpath <- paste0('/html/body/div[2]/div/div/div[3]/div/div[1]/table/tbody/tr[',
                                 as.character(element),
