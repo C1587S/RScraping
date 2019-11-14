@@ -14,7 +14,7 @@ remDr$open(silent = TRUE) #opens a browser
 url_raw <- 'http://balanceador.cnspd.mx/AsignacionDePlazas/consulta/'
 remDr$navigate(url_raw) # Navigate the page with the browser
 Sys.sleep(0.5)
-remDr$screenshot(display = T)
+
 # -----------------------------
 for (optionsCE in ops_cicloEscolar){
   resultado = try(cicloEscolar_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div[1]/div[1]/div'), silent=T)
@@ -90,7 +90,6 @@ for (optionsCE in ops_cicloEscolar){
         result = try(entidad_elemX$clickElement(), silent=T)
       }
     ) 
-    remDr$screenshot(display = TRUE)
     # -----------------------------
     # 3. Nivel educativo / ENTER
     resultado = try(NivelEducativo_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div/div[3]/div/div'), silent=T)
