@@ -189,7 +189,6 @@ for (optionsCE in ops_cicloEscolar){
       }  else {
         do_nothing()
       } 
-      #remDr$maxWindowSize()
       element_i_xpath <- paste0('/html/body/div[2]/div/div/div[3]/div/div[1]/table/tbody/tr[',
                                 as.character(element),
                                 ']/td[9]/span')
@@ -211,7 +210,7 @@ for (optionsCE in ops_cicloEscolar){
       
       # fill-in the table
       # Filling the information
-      DataBase$nivelEducativo[1]  <- "EDUCACIÓN BASICA"
+      DataBase$nivelEducativo[1]  <- "educacion_basica"
       DataBase$cicloEscolar[1]    <- cicloEsco_info
       # Row 1
       # concurso
