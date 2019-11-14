@@ -21,34 +21,11 @@ docker run -d -p 4445:4444 selenium/standalone-chrome
 
 2.2 Ejecutar el Script `Main_Basica.R` para descargar los datos de Nivel Educativo: Media SUperior.
 
-### Anotaciones y pendientes
-
+### Anotaciones
+- En superior se añade la información de _subsistema_.
 - En algunas ocasiones los formularios no tienen el mismo número de opciones, o incluso no tienen ninguna.  
+- Los scrappers trabajan de forma diferente para pulsar el botón de "ver más". Particularmente, para el caso de _superior_ es posible que el número de elementos "disponibles" no estén reportados, en ese caso el scrapper pulsa el botón, no los encuentra y continúa.
+- No se ha incorporado la opción de que el scrapper coninúe de nuevo si falla.
 
-> Solucionar incluyendo `Trycatch` para todos los casos.
 
-- Utilizar ajuste similar para cuando no existe información en la tabla del `pop-up`. (**falta**)
-- Ajustar todos los loops anidados. (Se ajustó con 10 `FOR` anidados, pero es esta la mejor opción?)
-- Terminar de documentar e incluir a Github:
-	- Parte que "scrapea" la tabla pop-up de información. 
-	- parte que incorpora la información en la matriz.
-
-### Anotación importante
-No es necesario entrar en cada una de las posibilidades, sino entrar hasta nivel educativo, donde siempre se activa el botón de consultar. Y a partir de allí darle click y descargar directamente los datos. 
-> ver: `ScrapinR_PlazasAsignadas_Superior_parsimonious`
-> Ganancias: con este enfoque son solo un poco más de 192 clicks en los menus de opciones. Antes eran un poco más de 15 millones.
-> 
-- Nuevo algoritmo (hay dos programas, uno para Básica y otro para Superior):
-
-```R
-FOR (opciones in ciclo_escolar){
-	FOR (opciones in entidad) {
-		click on (SUPERIOR o BASICA):
-			FOR (elementos in seq(1,length(table), by=1)) {
-				click en information
-					Extraer información
-			}
-	volver a cargar la página
-	}
-}
 ```
