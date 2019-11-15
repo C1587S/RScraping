@@ -1,6 +1,7 @@
 # ----- SCRAPING starts Here
 #shell('docker run -d -p 4445:4444 selenium/standalone-chrome')
 # initialize the loop counter
+#Scrape_2010 <- function(){
 longList <- nrow(rawData_2010)
 # 1.Open the browser and navigate the URL
 # eCaps <- list(chromeOptions = list(
@@ -76,6 +77,107 @@ for (folioID in rawData_2010$V1){ #rawData_2010
 
   remDr$switchToFrame(NULL) # Exiting the frame
 
+  # 6. Respuesta de mi hija(o) en Matemáticas
+  webElem <- remDr$findElement(value = '//*[(@id = "__tab_TabContainer1_TabPanel3")]//div')
+  resultado = try(webElem$clickElement(), silent=T)
+  suppressMessages(
+    while(inherits(resultado, "try-error")){
+      Sys.sleep(0.5) # This part is mandatory
+      resultado <- try(webElem$clickElement(), silent=T)
+    }
+  )
+  # select the case
+  pregunta_case_A <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[1]/td[1]/a/font/strong"),silent=T)
+  while(inherits(pregunta_case, "try-error")){
+    Sys.sleep(0.5) # This part is mandatory
+    pregunta_case_A <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[1]/td[1]/a/font/strong"),silent=T)
+  } 
+  pregunta_case_B <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[3]/td[2]/table/tbody/tr[1]/td[1]/a/font/strong"),silent=T)
+  while(inherits(pregunta_case, "try-error")){
+    Sys.sleep(0.5) # This part is mandatory
+    pregunta_case_B <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[3]/td[2]/table/tbody/tr[1]/td[1]/a/font/strong"),silent=T)
+  } 
+  
+  case_nroPreguntaA <- pregunta_case_A$getElementText()
+  case_nroPreguntaB <- pregunta_case_B$getElementText()
+  nroPregunta_1A <- gsub("(?<![0-9])0+", "", case_nroPreguntaA, perl = TRUE)
+  nroPregunta1A_int <- as.integer(nroPregunta_1A)
+  nroPregunta_1B <- gsub("(?<![0-9])0+", "", case_nroPreguntaB, perl = TRUE)
+  nroPregunta1B_int <- as.integer(nroPregunta_1B)
+  
+  if (nroPregunta1A_int == 11 & nroPregunta1B_int == 44) {
+    pregs_mat=pregs_mat_case1; pregs_esp=pregs_esp_case1
+  } else if(nroPregunta1A_int == 11 & nroPregunta1B_int == 26) {
+    pregs_mat=pregs_mat_case2; pregs_esp=pregs_esp_case2
+  } else if(nroPregunta1A_int == 9 & nroPregunta1B_int == 52){
+    pregs_mat=pregs_mat_case3; pregs_esp=pregs_esp_case3
+  } else if(nroPregunta1A_int == 11 & nroPregunta1B_int == 91){
+    pregs_mat=pregs_mat_case4; pregs_esp=pregs_esp_case4
+  } else if(nroPregunta1A_int == 1 & nroPregunta1B_int == 114){
+    pregs_mat=pregs_mat_case5; pregs_esp=pregs_esp_case5
+  } else if(nroPregunta1A_int == 12 & nroPregunta1B_int == 13){
+    pregs_mat=pregs_mat_case6; pregs_esp=pregs_esp_case6
+  } else if(nroPregunta1A_int == 13 & nroPregunta1B_int == 118){
+    pregs_mat=pregs_mat_case7; pregs_esp=pregs_esp_case7
+  } else {print("The case is not identified, please include check and include it")}
+  
+  # Get into the dataframe
+  FrameEspID <- '//*[(@id = "idframe3")]'
+  webFramesEsp <- remDr$findElements(using = 'xpath', value = FrameEspID)
+  sapply(webFramesEsp, function(x){x$getElementAttribute("src")})
+  remDr$switchToFrame(webFramesEsp[[1]])
+  ### Extract info
+  suppressMessages(
+    for (i in seq(1,length(pregs_mat), by=1)){
+      preguntaID<- pregs_mat[[i]]
+      nroPreguntaID <- paste(preguntaID, "/font/strong", sep ="")
+      resultado = try(nroPreguntaElem <- remDr$findElement(value = nroPreguntaID), silent=T)
+      while(inherits(resultado, "try-error")){
+        Sys.sleep(0.5) # This part is mandatory
+        resultado <- try(nroPreguntaElem <- remDr$findElement(value = nroPreguntaID), silent=T)
+      }
+      
+      nroPregunta <- nroPreguntaElem$getElementText()
+      nroPregunta_i <- gsub("(?<![0-9])0+", "", nroPregunta, perl = TRUE) # for omitting leading zeroes
+      nroPregunta_int <- as.integer(nroPregunta_i)
+      print(paste("Matemáticas - Scraping question #", nroPregunta_int, "From folio", folioID, "of", longList , sep =" "))
+      # Now, click on each question
+      elemento_preg <- remDr$findElement(value = preguntaID)
+      
+      resultado = try(remDr$executeScript("arguments[0].click();", list(elemento_preg)), silent=T)
+      while(inherits(resultado, "try-error")){
+        Sys.sleep(0.5) # This part is mandatory
+        resultado <- try(remDr$executeScript("arguments[0].click();", list(elemento_preg)), silent=T)
+      }
+      preg_correctaID <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[5]/td/table[2]/tbody/tr[1]/td/b"), silent=T)
+      while(inherits(preg_correctaID, "try-error")){
+        Sys.sleep(0.5) # This part is mandatory
+        preg_correctaID <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[5]/td/table[2]/tbody/tr[1]/td/b"), silent=T)
+      }
+      correctaInfo    <- preg_correctaID$getElementText()
+      # when there is no answer
+      preg_marcadaID  <- tryCatch({remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[5]/td/table[2]/tbody/tr[2]/td/b")}, silent=TRUE,error=function(err) NA)
+      if (typeof(preg_marcadaID)=="S4"){
+        marcadaInfo <- preg_marcadaID$getElementText()
+      } else {
+        marcadaInfo <- "sin_respuesta"
+        print(marcadaInfo)
+      }
+      
+      # Asign values to the database using the question number
+      if(is.na(DataBaseCorrecta[1, paste0("MatCorrecta_",nroPregunta_int)]))  DataBaseCorrecta[1, paste0("MatCorrecta_",nroPregunta_int)]<-as.character(correctaInfo)
+      DataBase[1, paste0("MatMarcada_",nroPregunta_int)] <-as.character(marcadaInfo)
+      # going back to the frame
+      regTablero <- remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[5]/td/table[3]/tbody/tr/td/span")
+      resultado = try(remDr$executeScript("arguments[0].click();", list(regTablero)), silent=T)
+      while(inherits(resultado, "try-error")){
+        Sys.sleep(0.5) # This part is mandatory
+        resultado <- try(remDr$executeScript("arguments[0].click();", list(regTablero)), silent=T)
+      }
+    }
+  )
+  # Exiting the frame
+  remDr$switchToFrame(NULL)
 # 5. Respuesta de mi hija(o) en Español
   webElem <- remDr$findElement(value = '//*[(@id = "__tab_TabContainer1_TabPanel2")]//div')
   resultado = try(webElem$clickElement(), silent=T)
@@ -143,72 +245,7 @@ for (folioID in rawData_2010$V1){ #rawData_2010
   ## Exiting the frame
   remDr$switchToFrame(NULL)
   
-# 6. Respuesta de mi hija(o) en Matemáticas
-  webElem <- remDr$findElement(value = '//*[(@id = "__tab_TabContainer1_TabPanel3")]//div')
-  resultado = try(webElem$clickElement(), silent=T)
-suppressMessages(
-  while(inherits(resultado, "try-error")){
-    Sys.sleep(0.5) # This part is mandatory
-    resultado <- try(webElem$clickElement(), silent=T)
-  }
-)
-# Get into the dataframe
-  FrameEspID <- '//*[(@id = "idframe3")]'
-  webFramesEsp <- remDr$findElements(using = 'xpath', value = FrameEspID)
-  sapply(webFramesEsp, function(x){x$getElementAttribute("src")})
-  remDr$switchToFrame(webFramesEsp[[1]])
-### Extract info
-  suppressMessages(
-  for (i in seq(1,length(pregs_mat), by=1)){
-    preguntaID<- pregs_mat[[i]]
-    nroPreguntaID <- paste(preguntaID, "/font/strong", sep ="")
-    resultado = try(nroPreguntaElem <- remDr$findElement(value = nroPreguntaID), silent=T)
-    while(inherits(resultado, "try-error")){
-      Sys.sleep(0.5) # This part is mandatory
-      resultado <- try(nroPreguntaElem <- remDr$findElement(value = nroPreguntaID), silent=T)
-    }
 
-    nroPregunta <- nroPreguntaElem$getElementText()
-    nroPregunta_i <- gsub("(?<![0-9])0+", "", nroPregunta, perl = TRUE) # for omitting leading zeroes
-    nroPregunta_int <- as.integer(nroPregunta_i)
-    print(paste("Matemáticas - Scraping question #", nroPregunta_int, "From folio", folioID, "of", longList , sep =" "))
-    # Now, click on each question
-    elemento_preg <- remDr$findElement(value = preguntaID)
-
-    resultado = try(remDr$executeScript("arguments[0].click();", list(elemento_preg)), silent=T)
-    while(inherits(resultado, "try-error")){
-      Sys.sleep(0.5) # This part is mandatory
-      resultado <- try(remDr$executeScript("arguments[0].click();", list(elemento_preg)), silent=T)
-    }
-    preg_correctaID <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[5]/td/table[2]/tbody/tr[1]/td/b"), silent=T)
-    while(inherits(preg_correctaID, "try-error")){
-      Sys.sleep(0.5) # This part is mandatory
-      preg_correctaID <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[5]/td/table[2]/tbody/tr[1]/td/b"), silent=T)
-    }
-    correctaInfo    <- preg_correctaID$getElementText()
-    # when there is no answer
-    preg_marcadaID  <- tryCatch({remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[5]/td/table[2]/tbody/tr[2]/td/b")}, silent=TRUE,error=function(err) NA)
-    if (typeof(preg_marcadaID)=="S4"){
-      marcadaInfo <- preg_marcadaID$getElementText()
-    } else {
-      marcadaInfo <- "sin_respuesta"
-      print(marcadaInfo)
-    }
-
-    # Asign values to the database using the question number
-    if(is.na(DataBaseCorrecta[1, paste0("MatCorrecta_",nroPregunta_int)]))  DataBaseCorrecta[1, paste0("MatCorrecta_",nroPregunta_int)]<-as.character(correctaInfo)
-    DataBase[1, paste0("MatMarcada_",nroPregunta_int)] <-as.character(marcadaInfo)
-    # going back to the frame
-    regTablero <- remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[5]/td/table[3]/tbody/tr/td/span")
-    resultado = try(remDr$executeScript("arguments[0].click();", list(regTablero)), silent=T)
-    while(inherits(resultado, "try-error")){
-      Sys.sleep(0.5) # This part is mandatory
-      resultado <- try(remDr$executeScript("arguments[0].click();", list(regTablero)), silent=T)
-    }
-  }
-  )
-  # Exiting the frame
-  remDr$switchToFrame(NULL)
 
 # 7.  Refreshing main page to the main page
   # Random pause before next query - add one to the counter
@@ -220,3 +257,6 @@ suppressMessages(
 
 } # FOR loop for FOLIO-list ends here
 
+#   
+#   
+#} # function ends
