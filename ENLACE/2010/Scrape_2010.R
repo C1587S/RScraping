@@ -1,7 +1,7 @@
 # ----- SCRAPING starts Here
 #shell('docker run -d -p 4445:4444 selenium/standalone-chrome')
 # initialize the loop counter
-#Scrape_2010 <- function(){
+Scrape_2010 <- function(){
 longList <- nrow(rawData_2010)
 # 1.Open the browser and navigate the URL
 # eCaps <- list(chromeOptions = list(
@@ -86,16 +86,21 @@ for (folioID in rawData_2010$V1){ #rawData_2010
       resultado <- try(webElem$clickElement(), silent=T)
     }
   )
+  # Get into the dataframe
+  FrameEspID <- '//*[(@id = "idframe3")]'
+  webFramesEsp <- remDr$findElements(using = 'xpath', value = FrameEspID)
+  sapply(webFramesEsp, function(x){x$getElementAttribute("src")})
+  remDr$switchToFrame(webFramesEsp[[1]])
   # select the case
   pregunta_case_A <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[1]/td[1]/a/font/strong"),silent=T)
-  while(inherits(pregunta_case, "try-error")){
+  while(inherits(pregunta_case_A, "try-error")){
     Sys.sleep(0.5) # This part is mandatory
     pregunta_case_A <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[1]/td[1]/a/font/strong"),silent=T)
   } 
-  pregunta_case_B <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[3]/td[2]/table/tbody/tr[1]/td[1]/a/font/strong"),silent=T)
-  while(inherits(pregunta_case, "try-error")){
+  pregunta_case_B <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[2]/td[1]/a/font/strong"),silent=T)
+  while(inherits(pregunta_case_B, "try-error")){
     Sys.sleep(0.5) # This part is mandatory
-    pregunta_case_B <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[3]/td[2]/table/tbody/tr[1]/td[1]/a/font/strong"),silent=T)
+    pregunta_case_B <- try(remDr$findElement(value = "/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr[2]/td[1]/a/font/strong"),silent=T)
   } 
   
   case_nroPreguntaA <- pregunta_case_A$getElementText()
@@ -121,11 +126,6 @@ for (folioID in rawData_2010$V1){ #rawData_2010
     pregs_mat=pregs_mat_case7; pregs_esp=pregs_esp_case7
   } else {print("The case is not identified, please include check and include it")}
   
-  # Get into the dataframe
-  FrameEspID <- '//*[(@id = "idframe3")]'
-  webFramesEsp <- remDr$findElements(using = 'xpath', value = FrameEspID)
-  sapply(webFramesEsp, function(x){x$getElementAttribute("src")})
-  remDr$switchToFrame(webFramesEsp[[1]])
   ### Extract info
   suppressMessages(
     for (i in seq(1,length(pregs_mat), by=1)){
@@ -259,4 +259,4 @@ for (folioID in rawData_2010$V1){ #rawData_2010
 
 #   
 #   
-#} # function ends
+} # function ends
