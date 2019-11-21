@@ -190,6 +190,10 @@ for (i in seq(1,7, by=1)){
   Mat_first_col_T4[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[5]/td[2]/table/tbody/tr/td[",
                                  as.character(i), "]/a", sep="")
 }
+for (i in seq(1,6, by=1)){
+  Mat_first_col_T1[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[2]/td[2]/table/tbody/tr/td[",
+                                 as.character(i), "]/a", sep="")
+}
 for (i in seq(1,3, by=1)){
   Mat_first_col_T7[[i]] <- paste("/html/body/form/div[3]/div/table/tbody/tr[7]/td/table[1]/tbody/tr[8]/td[2]/table/tbody/tr/td[",
                                  as.character(i), "]/a", sep="")
