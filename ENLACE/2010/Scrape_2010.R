@@ -7,8 +7,6 @@ longList <- nrow(rawData_2010)
 # eCaps <- list(chromeOptions = list(
 #   args = c('--no-sandbox','--headless', '--disable-gpu', '--window-size=1280,800','--disable-dev-shm-usage')
 # ))
-
-
 remDr <- remoteDriver(remoteServerAddr = "localhost", port = 4445L, browserName = "firefox", extraCapabilities = list(marionette = TRUE)) # extraCapabilities = eCaps
 
 remDr$open(silent = TRUE) #opens a browser
@@ -28,10 +26,25 @@ for (folioID in rawData_2010$V1){ #rawData_2010
 # 2. Fill in the form to make the query with FOLIO keys
   print(paste("Now in folio ", folioID))
 
-  webElem<-remDr$findElement(using = 'xpath', value = '//*[(@id = "txtFolioAlumno")]') # find the form
+  suppressMessages(webElem<-try(remDr$findElement(using = 'xpath', value = '//*[(@id = "txtFolioAlumno")]'), silent = T))
+  suppressMessages(
+    while(inherits(webElem, "try-error")){
+      #webElem$clickElement()
+      webElem<-try(remDr$findElement(using = 'xpath', value = '//*[(@id = "txtFolioAlumno")]'), silent = T)
+    }
+  )  
+  
   webElem$sendKeysToElement(list(folioID)) # fill in the form with the folio number
   ConsButton <- '//*[(@id = "imgButConsultar")]'
-  webElem <- remDr$findElement(value = ConsButton) # find the button
+  
+  suppressMessages(try(webElem <- remDr$findElement(value = ConsButton), silent = T))
+  suppressMessages(
+    while(inherits(webElem, "try-error")){
+      #webElem$clickElement()
+      try(webElem <- remDr$findElement(value = ConsButton), silent = T)
+    }
+  )  
+  
   webElem$clickElement() # click on it
   Sys.sleep(0.5)
 # 3. Extract general information
@@ -61,24 +74,50 @@ for (folioID in rawData_2010$V1){ #rawData_2010
 
 # 4. General results for: español and matemáticas
   FrameID <- '//*[(@id = "idframe1")]'
-  webFrames <- remDr$findElements(using = 'xpath', value = FrameID)
+  suppressMessages(try(webFrames <- remDr$findElements(using = 'xpath', value = FrameID)))
+  suppressMessages(
+    while(inherits(webElemTable, "try-error")){
+      #webElem$clickElement()
+      try(webFrames <- remDr$findElements(using = 'xpath', value = FrameID), silent=T)
+    }
+  )  
   sapply(webFrames, function(x){x$getElementAttribute("src")})
   remDr$switchToFrame(webFrames[[1]])
   # Resultados de español
   res_esp <- '//*[@id="lblAsig1"]'
-  ResultEspElem <- remDr$findElement(using = 'xpath', value = res_esp ) # get into the table
+  suppressMessages(try(ResultEspElem <- remDr$findElement(using = 'xpath', value = res_esp ), silent = T))
+  suppressMessages(
+    while(inherits(webElemTable, "try-error")){
+      #webElem$clickElement()
+      try(ResultEspElem <- remDr$findElement(using = 'xpath', value = res_esp ))
+    }
+  )    
   ResultEsp <- ResultEspElem$getElementText()
   # Resultados de matemáticas
   res_mat <- '//*[@id="lblAsig2"]'
-  ResultMatElem <- remDr$findElement(using = 'xpath', value = res_mat) # get into the table
+  
+  suppressMessages(try(ResultMatElem <- remDr$findElement(using = 'xpath', value = res_mat), silent = T))
+  suppressMessages(
+    while(inherits(webElemTable, "try-error")){
+      #webElem$clickElement()
+      try(ResultMatElem <- remDr$findElement(using = 'xpath', value = res_mat), silent = T)
+    }
+  )  
   ResultMat <- ResultMatElem$getElementText()
   DataBase$PuntajeTotalEsp[1]<- as.integer(ResultEsp)
   DataBase$PuntajeTotalMat[1]<- as.integer(ResultMat)
-
+  
   remDr$switchToFrame(NULL) # Exiting the frame
 
   # 6. Respuesta de mi hija(o) en Matemáticas
-  webElem <- remDr$findElement(value = '//*[(@id = "__tab_TabContainer1_TabPanel3")]//div')
+  suppressMessages(try(webElem <- remDr$findElement(value = '//*[(@id = "__tab_TabContainer1_TabPanel3")]//div'), silent = T))
+  suppressMessages(
+    while(inherits(webElemTable, "try-error")){
+      #webElem$clickElement()
+      try(webElem <- remDr$findElement(value = '//*[(@id = "__tab_TabContainer1_TabPanel3")]//div'), silent = T)
+    }
+  )  
+  
   resultado = try(webElem$clickElement(), silent=T)
   suppressMessages(
     while(inherits(resultado, "try-error")){
@@ -88,7 +127,14 @@ for (folioID in rawData_2010$V1){ #rawData_2010
   )
   # Get into the dataframe
   FrameEspID <- '//*[(@id = "idframe3")]'
-  webFramesEsp <- remDr$findElements(using = 'xpath', value = FrameEspID)
+ 
+  suppressMessages(try(webFramesEsp <- remDr$findElements(using = 'xpath', value = FrameEspID), silent = T))
+  suppressMessages(
+    while(inherits(webElemTable, "try-error")){
+      #webElem$clickElement()
+      (try(webFramesEsp <- remDr$findElements(using = 'xpath', value = FrameEspID), silent = T))
+    }
+  )   
   sapply(webFramesEsp, function(x){x$getElementAttribute("src")})
   remDr$switchToFrame(webFramesEsp[[1]])
   # select the case
@@ -179,7 +225,13 @@ for (folioID in rawData_2010$V1){ #rawData_2010
   # Exiting the frame
   remDr$switchToFrame(NULL)
 # 5. Respuesta de mi hija(o) en Español
-  webElem <- remDr$findElement(value = '//*[(@id = "__tab_TabContainer1_TabPanel2")]//div')
+  suppressMessages(try( webElem <- remDr$findElement(value = '//*[(@id = "__tab_TabContainer1_TabPanel2")]//div'), silent = T))
+  suppressMessages(
+    while(inherits(webElemTable, "try-error")){
+      #webElem$clickElement()
+      try( webElem <- remDr$findElement(value = '//*[(@id = "__tab_TabContainer1_TabPanel2")]//div'), silent = T)
+    }
+  )   
   resultado = try(webElem$clickElement(), silent=T)
   suppressMessages(
     while(inherits(resultado, "try-error")){
@@ -190,7 +242,14 @@ for (folioID in rawData_2010$V1){ #rawData_2010
   ###############################
   # Get into the frame
   FrameEspID <- '//*[(@id = "idframe2")]'
-  webFramesEsp <- remDr$findElements(using = 'xpath', value = FrameEspID)
+  suppressMessages(try(webFramesEsp <- remDr$findElements(using = 'xpath', value = FrameEspID), silent = T))
+  suppressMessages(
+    while(inherits(webElemTable, "try-error")){
+      #webElem$clickElement()
+      try(webFramesEsp <- remDr$findElements(using = 'xpath', value = FrameEspID), silent = T)
+    }
+  )   
+  
   sapply(webFramesEsp, function(x){x$getElementAttribute("src")})
   remDr$switchToFrame(webFramesEsp[[1]])
 ### Exctract info
