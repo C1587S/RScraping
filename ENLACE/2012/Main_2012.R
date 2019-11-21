@@ -13,9 +13,10 @@ if(Sys.info()["user"]=="c1587s") {
   dir_do = "/Users/c1587s/Documents/GitHub/RScraping/ENLACE/2012/"
 }
 
-
 source(paste0(dir_do,"prelims_2012.R"))
-# Scraping starts
 source(paste0(dir_do,"Scrape_2012.R"))
+# Scraping starts
+retry(Scrape_2012())
+
 #tryCatch({source(paste0(dir_do,"Scrape_2012.R"))}, silent=FALSE,error=send_error_email())
 #send_noerror_email() # send email if no error occurs
