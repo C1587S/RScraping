@@ -821,8 +821,8 @@ send.mail(from = sender,
           send = TRUE)
 }
 
-#write.csv(DataBase, file="CreatedData/2011/DataBase_ENLACE2011_Total.csv", row.names = FALSE)
-#write.csv(DataBaseCorrecta, file="CreatedData/2011/DataBase_ENLACE2011_Correcta.csv", row.names = FALSE)
+write.csv(DataBase, file="CreatedData/2011/DataBase_ENLACE2011_Total.csv", row.names = FALSE)
+write.csv(DataBaseCorrecta, file="CreatedData/2011/DataBase_ENLACE2011_Correcta.csv", row.names = FALSE)
 
 ## function for retrying
 retry <- function(.FUN, max.attempts = 10000, sleep.seconds = 0.5) {
