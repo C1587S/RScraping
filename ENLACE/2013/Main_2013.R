@@ -16,7 +16,6 @@ if(Sys.info()["user"]=="c1587s") {
     dir_do = "/Users/c1587s/Documents/GitHub/RScraping/ENLACE/2013/"
 }
 
-
 source(paste0(dir_do,"prelims_2013.R"))
 source(paste0(dir_do,"Scrape_2013.R"))
 # Scraping starts
