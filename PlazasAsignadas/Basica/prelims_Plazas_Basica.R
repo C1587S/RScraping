@@ -29,7 +29,7 @@ for (j in seq(1,6, by=1)){ops_cicloEscolar[[j]] <- paste0('//*[(@id=\"react-sele
 # Entidad / ENTER
 # para que empiece en cohauila (es el número 8 de la lista -> 7) # se ajsto el nro total de elementos (debe cambiarse para el siguiente ciclo esc)
 ops_entidad <- c()
-for (j in seq(1,25, by=1)) {ops_entidad[[j]] <- paste0('//*[(@id=\"react-select-3--option-', as.character(j+6),'\")]')}
+for (j in seq(1,14, by=1)) {ops_entidad[[j]] <- paste0('//*[(@id=\"react-select-3--option-', as.character(j+17),'\")]')}
 # Nivel educativo / ENTER
 ops_NivelEduc <- '//*[(@id = "react-select-4--option-0")]'
 
