@@ -165,6 +165,10 @@ for (opcion_del in ops_delegaciones){
                   head(DataBase)
                   } # termina S4 en capacidad instalada niños
               } # termina el S4 en guarderías
+              
+              random_num <- runif(1,1,10)
+              Sys.sleep(random_num)
+              
             } #termina FOR de guarderías
               
           } # termina loop para S4 en prestación 
