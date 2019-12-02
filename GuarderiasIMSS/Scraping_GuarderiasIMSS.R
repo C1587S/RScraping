@@ -95,14 +95,14 @@ for (opcion_del in ops_delegaciones){
             # loop
             for (opcion_guar in ops_guarderia){
               resultado = tryCatch({remDr$findElement(value = opcion_guar)}, error = function(e){NULL})
-              Sys.sleep(1)
+              Sys.sleep(0.8)
               
               if (is.null(resultado)){
                 break
               } else if (typeof(resultado)=="S4"){
                 resultado = try(resultado$clickElement(),silent=T)
                 
-                Sys.sleep(1)
+                Sys.sleep(0.8)
                 remDr$screenshot(display = TRUE)
                 
                 
@@ -114,7 +114,7 @@ for (opcion_del in ops_delegaciones){
                   } else if (capacidadInstaladaNinos_info$getElementText()!=""){
                  
                   
-                  Sys.sleep(1)
+                  Sys.sleep(0.8)
                   remDr$screenshot(display = TRUE)
                 
                   DataBase$capacidadInstaladaNinos <- as.character(capacidadInstaladaNinos_info$getElementText())
@@ -166,7 +166,7 @@ for (opcion_del in ops_delegaciones){
                   } # termina S4 en capacidad instalada niños
               } # termina el S4 en guarderías
               
-              random_num <- runif(1,1,10)
+              random_num <- runif(1,1,5)
               Sys.sleep(random_num)
               
             } #termina FOR de guarderías
