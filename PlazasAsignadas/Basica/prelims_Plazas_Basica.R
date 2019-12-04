@@ -30,7 +30,7 @@ for (j in seq(1,6, by=1)){ops_cicloEscolar[[j]] <- paste0('//*[(@id=\"react-sele
 # Entidad / ENTER
 # para que empiece en cohauila (es el número 8 de la lista -> 7) # se ajsto el nro total de elementos (debe cambiarse para el siguiente ciclo esc)
 ops_entidad <- c()
-for (j in seq(1,14, by=1)) {ops_entidad[[j]] <- paste0('//*[(@id=\"react-select-3--option-', as.character(j+17),'\")]')}
+for (j in seq(1,13, by=1)) {ops_entidad[[j]] <- paste0('//*[(@id=\"react-select-3--option-', as.character(j+18),'\")]')}
 # Nivel educativo / ENTER
 ops_NivelEduc <- '//*[(@id = "react-select-4--option-0")]'
 
@@ -68,8 +68,8 @@ send_noerror_email <- function(){
 }
 
 # create csv file
-write.csv(DataBase, file="DataBase_PlazasAsignadas_Basica.csv", row.names = F)
-write.csv(DB_listaPlazas, file="Lista_ClavesPlazasAsignadas_Basica.csv", row.names = F)
+#write.csv(DataBase, file="DataBase_PlazasAsignadas_Basica.csv", row.names = F)
+#write.csv(DB_listaPlazas, file="Lista_ClavesPlazasAsignadas_Basica.csv", row.names = F)
 ## function for retrying
 retry <- function(.FUN, max.attempts = 10000, sleep.seconds = 0.5) {
   expr <- substitute(.FUN)
