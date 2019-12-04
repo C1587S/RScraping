@@ -3,18 +3,19 @@
 # -----------------------------
 # Open browser / navigate the page
 #  > docker run -d -p 4445:4444 selenium/standalone-firefox
+
+Scrape_PlazasAsignadas <- function(){
+  
 eCaps <- list(chromeOptions = list(
   args = c('--no-sandbox','--headless', '--disable-gpu', '--window-size=1280,800','--disable-dev-shm-usage')
 ))
 remDr <- remoteDriver(remoteServerAddr = "localhost", port = 4445L, browserName = "chrome",extraCapabilities = eCaps)
-
-Scrape_PlazasAsignadas <- function(){
-  
 remDr$open(silent = TRUE) #opens a browser
 url_raw <- 'http://balanceador.cnspd.mx/AsignacionDePlazas/consulta/'
 remDr$navigate(url_raw) # Navigate the page with the browser
 Sys.sleep(0.5)
 
+time_0 <- Sys.time()
 # -----------------------------
 for (optionsCE in ops_cicloEscolar){
   resultado = try(cicloEscolar_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div[1]/div[1]/div'), silent=T)
@@ -57,7 +58,87 @@ for (optionsCE in ops_cicloEscolar){
   cicloEsco_info <- cicloEsco_info_elem$getElementText()
   # -----------------------------
   # 2. Entidad / ENTER
+  remDr$navigate(url_raw) # Navigate the page with the browser
+  Sys.sleep(0.5)
+  
+  resultado = try(cicloEscolar_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div[1]/div[1]/div'), silent=T)
+  suppressMessages(
+    while(inherits(resultado, "try-error")){
+      Sys.sleep(0.2) # This part is mandatory
+      resultado = try(cicloEscolar_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div[1]/div[1]/div'), silent=T)
+    }
+  )  
+  result = try(cicloEscolar_elem$clickElement(), silent=T)
+  suppressMessages(
+    while(inherits(resultado, "try-error")){
+      Sys.sleep(0.2) # This part is mandatory
+      result = try(cicloEscolar_elem$clickElement(), silent=T)
+    }
+  ) 
+  click_cicloEsc <- optionsCE
+  resultado = try(cicloEscolar_elemX <- remDr$findElement(value = click_cicloEsc), silent=T)
+  suppressMessages(
+    while(inherits(resultado, "try-error")){
+      Sys.sleep(0.2) # This part is mandatory
+      resultado = try(cicloEscolar_elemX <- remDr$findElement(value = click_cicloEsc), silent=T)
+    }
+  )   
+  result = try(cicloEscolar_elemX$clickElement(), silent=T)
+  
+  resultado = try(cicloEsco_info_elem <- remDr$findElement(value = '//*[@id="react-select-2--value-item"]'), silent=T)
+  suppressMessages(
+    while(inherits(resultado, "try-error")){
+      Sys.sleep(0.2) # This part is mandatory
+      resultado = try(cicloEsco_info_elem <- remDr$findElement(value = '//*[@id="react-select-2--value-item"]'), silent=T)
+    }
+  )    
+  cicloEsco_info <- cicloEsco_info_elem$getElementText()
+  
+  
+  
+  
+  
   for (optionEnt in ops_entidad){
+    # --------------- 
+    # Load the page again
+    remDr$navigate(url_raw) # Navigate the page with the browser
+    Sys.sleep(0.5)
+    
+    resultado = try(cicloEscolar_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div[1]/div[1]/div'), silent=T)
+    suppressMessages(
+      while(inherits(resultado, "try-error")){
+        Sys.sleep(0.2) # This part is mandatory
+        resultado = try(cicloEscolar_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div[1]/div[1]/div'), silent=T)
+      }
+    )  
+    result = try(cicloEscolar_elem$clickElement(), silent=T)
+    suppressMessages(
+      while(inherits(resultado, "try-error")){
+        Sys.sleep(0.2) # This part is mandatory
+        result = try(cicloEscolar_elem$clickElement(), silent=T)
+      }
+    ) 
+    click_cicloEsc <- optionsCE
+    resultado = try(cicloEscolar_elemX <- remDr$findElement(value = click_cicloEsc), silent=T)
+    suppressMessages(
+      while(inherits(resultado, "try-error")){
+        Sys.sleep(0.2) # This part is mandatory
+        resultado = try(cicloEscolar_elemX <- remDr$findElement(value = click_cicloEsc), silent=T)
+      }
+    )   
+    result = try(cicloEscolar_elemX$clickElement(), silent=T)
+    
+    
+    resultado = try(cicloEsco_info_elem <- remDr$findElement(value = '//*[@id="react-select-2--value-item"]'), silent=T)
+    suppressMessages(
+      while(inherits(resultado, "try-error")){
+        Sys.sleep(0.2) # This part is mandatory
+        resultado = try(cicloEsco_info_elem <- remDr$findElement(value = '//*[@id="react-select-2--value-item"]'), silent=T)
+      }
+    )    
+    cicloEsco_info <- cicloEsco_info_elem$getElementText()
+    
+    # --------------- 
     resultado = try(entidad_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div/div[2]/div/div'), silent=T)
     suppressMessages(
       while(inherits(resultado, "try-error")){
@@ -92,6 +173,7 @@ for (optionsCE in ops_cicloEscolar){
     ) 
     # -----------------------------
     # 3. Nivel educativo / ENTER
+    Sys.sleep(0.5)
     resultado = try(NivelEducativo_elem <- remDr$findElement(value = '/html/body/div[2]/div/div/section/div/div/div/div[2]/div/div/div/div[3]/div/div'), silent=T)
     suppressMessages(
       while(inherits(resultado, "try-error")){
@@ -164,7 +246,17 @@ for (optionsCE in ops_cicloEscolar){
     ideonesAsignados_info <-ideonesAsignados_elem$getElementText()
     DataBase$idoneosAsignados[1] <- ideonesAsignados_info
     ## Nota: number of folios asignados != number of elements in the table of Plazas Asignadas
-    resultado = try(nro_elementos_elem <- remDr$findElement(value ='//*[contains(concat( " ", @class, " " ), concat( " ", "paging", " " ))]'), silent=T)
+    resultado = tryCatch({nro_elementos_elem <- remDr$findElement(value ='//*[contains(concat( " ", @class, " " ), concat( " ", "paging", " " ))]')},error = function(e){NULL}, silent=T)
+    # if there are no asignados, continue
+    if (is.null(resultado)){
+      print("En esta entidad no hay idóneos asigndos, ni info adicional que extraer")
+      print("Continuando a la siguiente entidad ...")
+      # Añadir fila al archivo csv 
+      #DB_listaPlazas <- data.frame(lapply(DB_listaPlazas, as.character), stringsAsFactors=FALSE)
+      #DataBase <- data.frame(lapply(DataBase, as.character), stringsAsFactors=FALSE)
+      #write.table(DataBase, file="DataBase_PlazasAsignadas_Basica.csv", row.names = FALSE, append = TRUE,col.names=F,sep=",")
+      } else{
+      
     suppressMessages(
       while(inherits(resultado, "try-error")){
         Sys.sleep(0.2) # This part is mandatory
@@ -185,9 +277,25 @@ for (optionsCE in ops_cicloEscolar){
           }
         ) 
         verMas_boton$clickElement()
-        Sys.sleep(0.2)
+        
       }  else {
-        do_nothing()
+        
+          # pause every 30 minutes
+        time_1 <- Sys.time()
+        diff_times = difftime(time_1, time_0, units='mins')
+        
+        if (as.integer(diff_times)!=0 & as.integer(diff_times)%%500 == 0) {
+          print(paste("Tiempo transcurrido:", floor(diff_times), "mins.", sep=" "))
+          print("Haciendo pausa de 5 minutos")
+          Sys.sleep(60*5)
+        } else {
+          # random pause
+            #print("...")
+            #random <- runif(1, 1, 3)
+            #Sys.sleep(random) 
+          do_nothing()
+        }
+        # 
       } 
       element_i_xpath <- paste0('/html/body/div[2]/div/div/div[3]/div/div[1]/table/tbody/tr[',
                                 as.character(element),
@@ -382,7 +490,6 @@ for (optionsCE in ops_cicloEscolar){
       DB_listaPlazas <- data.frame(lapply(DB_listaPlazas, as.character), stringsAsFactors=FALSE)
       DataBase <- data.frame(lapply(DataBase, as.character), stringsAsFactors=FALSE)
       write.table(DataBase, file="DataBase_PlazasAsignadas_Basica.csv", row.names = FALSE, append = TRUE,col.names=F,sep=",")
-      write.table(DB_listaPlazas, file="Lista_ClavesPlazasAsignadas_Basica.csv", row.names = FALSE, append = TRUE,col.names=F,sep=",")
     }
     # reload page and load again ciclo escolar - then change entidad whitin the for loop
     remDr$navigate(url_raw) # Navigate the page with the browser
@@ -422,9 +529,12 @@ for (optionsCE in ops_cicloEscolar){
         Sys.sleep(0.2) # This part is mandatory
         resultado = try(cicloEsco_info_elem <- remDr$findElement(value = '//*[@id="react-select-2--value-item"]'), silent=T)
       }
-    )    
+    ) 
+    
+    } # end - there are asignados
     
   } # ends loop for 2. Entidad 
+
 } # ends loop for 1. ciclo escolar
 
 } # function ends

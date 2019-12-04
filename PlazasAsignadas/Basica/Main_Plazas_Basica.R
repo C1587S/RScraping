@@ -7,7 +7,7 @@ if(Sys.info()["user"]=="mauricio"){
   setwd("/mnt/HDD/git/RScraping/PlazasAsignadas/Basica") 
 } 
 if(Sys.info()["user"]=="c1587s") {
-  setwd("/Users/c1587s/Documents/Github/RScraping/PlazasAsignadas/Basica")
+  setwd("/Users/c1587s/Documents/Github/R_Scraping/PlazasAsignadas/Basica")
 }
 source("prelims_Plazas_Basica.R")
 source("ScrapingR_PlazasAsignadas_Basica.R")

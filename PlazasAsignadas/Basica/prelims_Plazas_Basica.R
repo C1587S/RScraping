@@ -1,3 +1,4 @@
+
 MuteMessages <- suppressPackageStartupMessages
 MuteMessages(library(tidyverse))
 MuteMessages(library(RSelenium))
@@ -67,8 +68,8 @@ send_noerror_email <- function(){
 }
 
 # create csv file
-# write.csv(DataBase, file="DataBase_PlazasAsignadas_Basica.csv", row.names = F)
-# write.csv(DB_listaPlazas, file="Lista_ClavesPlazasAsignadas_Basica.csv", row.names = F)
+write.csv(DataBase, file="DataBase_PlazasAsignadas_Basica.csv", row.names = F)
+write.csv(DB_listaPlazas, file="Lista_ClavesPlazasAsignadas_Basica.csv", row.names = F)
 ## function for retrying
 retry <- function(.FUN, max.attempts = 10000, sleep.seconds = 0.5) {
   expr <- substitute(.FUN)
