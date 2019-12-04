@@ -93,11 +93,7 @@ for (optionsCE in ops_cicloEscolar){
     }
   )    
   cicloEsco_info <- cicloEsco_info_elem$getElementText()
-  
-  
-  
-  
-  
+  # entidades
   for (optionEnt in ops_entidad){
     # --------------- 
     # Load the page again
