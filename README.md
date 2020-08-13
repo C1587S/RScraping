@@ -1,5 +1,5 @@
 # R_scraping
-This repository contains various files with scraping code using R programming language.
+This repository contains files with scraping code using R programming language.
 
 Hay varias carpetas que contienen los respectivos scrappers para diferentes páginas del sector público en México. 
 
